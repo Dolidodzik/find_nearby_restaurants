@@ -17,4 +17,6 @@ location = {'Latitude': '50.143232', 'Longitude': '22.067609599999997'}
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1&type=restaurant&keyword=cruise&key=" + settings.KEY
 #data = low_level_code.get_data_from_url(url)
-data = code.get_places_in_circle(location, 99999, False)
+
+# Searching for places in location, in 99999 meters long radius that is openned now, and contain keyword "pizza" somewhere
+data = code.get_places_in_circle(location, 99999, open_now=True, keyword="pizza")
