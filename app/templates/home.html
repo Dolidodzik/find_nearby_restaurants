@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title> FEST APKA </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  </head>
+  <body>
+
+    this is /app/templates/home.html
+    <br/><br/>
+
+    data: <br/>
+    {{ data }}
+    <br/><br/>
+
+    <div id = "demo">  </div>
+
+    <script>
+
+    // Adding AJAX setup for every feature request
+    $.ajaxSetup({
+
+       // For CSRF protection
+       beforeSend: function(xhr, settings) {
+
+           function getCookie(name) {
+               var cookieValue = null;
+               if (document.cookie && document.cookie != '') {
+                   var cookies = document.cookie.split(';');
+                   for (var i = 0; i < cookies.length; i++) {
+                       var cookie = jQuery.trim(cookies[i]);
+                       if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                       }
+                   }
+               }
+               return cookieValue;
+           }
+           if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+               xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+           }
+       }
+     });
+
+
+      /* Getting div to display come data */
+      var x = document.getElementById("demo");
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by your browser.";
+        }
+      }
+
+      function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+      }
+
+      getLocation();
+
+      $(document).ready(function() {
+          $.ajax({
+              method: 'POST',
+              url: '/',
+              data: {'yourJavaScriptArrayKey': 'jd'},
+              success: function (data) {
+                   //this gets called when server returns an OK response
+                   alert("it worked!");
+              },
+              error: function (data) {
+                   alert("it didnt work");
+              }
+          });
+      });
+
+    </script>
+
+  </body>
+</html>
