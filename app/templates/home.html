@@ -2,6 +2,14 @@
   <head>
     <title> FEST APKA </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <style>
+      body{
+        padding-left: 30px !important;
+        background-color: #555;
+        font-size: 25px;
+        color: #aaa;
+      }
+    </style>
   </head>
   <body>
 
@@ -48,33 +56,45 @@
 
       function getLocation() {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
+          navigator.geolocation.getCurrentPosition(GetPosition);
         } else {
           x.innerHTML = "Geolocation is not supported by your browser.";
         }
       }
 
-      function showPosition(position) {
+      function GetPosition(position) {
+
+        // Showing coords in DOM
         x.innerHTML = "Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude;
+
+        // Setting up object to send to backend
+        let location = {
+          Latitude: position.coords.latitude,
+          Longitude: position.coords.longitude,
+        };
+
+        SendBackendGeoLocation(location);
+
+      }
+
+      function SendBackendGeoLocation(data_to_send){
+        $(document).ready(function() {
+            $.ajax({
+                method: 'POST',
+                url: '/',
+                data: {'location': data_to_send},
+                success: function (data) {
+                     alert("AJAX WORKED! DATA: "+data);
+                },
+                error: function (data) {
+                     alert("ERROR AJAX CALL DIDNT WORK");
+                }
+            });
+        });
       }
 
       getLocation();
-
-      $(document).ready(function() {
-          $.ajax({
-              method: 'POST',
-              url: '/',
-              data: {'yourJavaScriptArrayKey': 'jd'},
-              success: function (data) {
-                   //this gets called when server returns an OK response
-                   alert("it worked!");
-              },
-              error: function (data) {
-                   alert("it didnt work");
-              }
-          });
-      });
 
     </script>
 

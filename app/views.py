@@ -6,11 +6,18 @@ import app.scripts_for_api_control.main as SFAC
 
 def test(request):
 
+    # Getting ajax request
     if request.is_ajax():
-        #do something
-        request_data = request.POST
-        print("JDJD")
-        return HttpResponse("OK")
+
+        # Storing location data from request
+        location = {}
+        location['Latitude'] = request.POST['location[Latitude]']
+        location['Longitude'] = request.POST['location[Longitude]']
+
+        print("location that ajax sent: ", location)
+
+        # This should be replaced with data about found places
+        return HttpResponse("JD KRASNOLUDA")
     else:
         print("type of data:", type(SFAC.data))
         return render(request, "home.html", {"data": SFAC.data})
