@@ -1,10 +1,10 @@
-# This file contain code, fucntions, classes that can be called in "main.py" from here only.
-# This file contains "high level" code, and use another python files that contain "low level code"
+# This file contains "low_level_code". Code from here is used in "high_level_code.py" to make things easier
 
 import requests
-import app.scripts_for_api_control.settings as settings
 import json
 from collections import namedtuple
+
+import app.scripts_for_api_control.settings as settings
 
 # This function returns response JSON data represented as python object
 def get_data_from_url(url):

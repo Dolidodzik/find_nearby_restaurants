@@ -16,7 +16,7 @@ def test(request):
 
         print("location that ajax sent: ", location)
 
-        # This should be replaced with data about found places
+        # This should be replaced with data about found placess
         return HttpResponse("JD KRASNOLUDA")
     else:
         print("type of data:", type(SFAC.data))
