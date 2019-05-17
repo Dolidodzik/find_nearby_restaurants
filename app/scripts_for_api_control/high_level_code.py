@@ -15,19 +15,19 @@ import app.scripts_for_api_control.low_level_code as low_level_code
 # number_of_places_to_return control how much places will be returned. If == None, every place will be returned
 def get_places_in_circle(location, radius, open_now=None, keyword=None, number_of_places_to_return=None):
 
-    # Setting up url
-    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ location['Latitude'] +","+ location['Longitude'] +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
+    # Setting up URL
+    URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ location['Latitude'] +","+ location['Longitude'] +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
 
     # Adding open_now if its sepcified as argument
     if open_now == True:
-        url += "&opennow="+str(open_now)
+        URL += "&opennow="+str(open_now)
 
     # Adding keyword if its sepcified as argument
     if keyword != None:
-        url += "&keyword="+str(keyword)
+        URL += "&keyword="+str(keyword)
 
-    # Getting response from url (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
-    places = low_level_code.get_data_from_url(url).results
+    # Getting response from URL (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
+    places = low_level_code.get_data_from_URL(URL).results
 
     # Cutting places array
     if number_of_places_to_return != None:
@@ -42,23 +42,23 @@ def get_places_in_circle(location, radius, open_now=None, keyword=None, number_o
 # Default value of fields is taken from settings.fields
 def get_place_details(place_id, fields = settings.fields):
 
-    #url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
-    url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
+    #URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
+    URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
 
 
     if fields != None:
         # Adding fields parameter with simple loop
-        url += "&fields="
+        URL += "&fields="
         # First field is the only that dont need come
-        url += fields[0]
+        URL += fields[0]
         # removing this field from list
         fields.pop(0)
 
         # Loop through list to add every field to URL
         for field in fields:
-            url += "," + field
+            URL += "," + field
 
-    # Getting response from url (.results to just get results as object, I dont care about html_attributions and next_page_token here)
-    place_details = low_level_code.get_data_from_url(url).result
+    # Getting response from URL (.results to just get results as object, I dont care about html_attributions and next_page_token here)
+    place_details = low_level_code.get_data_from_URL(URL).result
 
     return place_details

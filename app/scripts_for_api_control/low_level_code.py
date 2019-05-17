@@ -7,12 +7,11 @@ from collections import namedtuple
 import app.scripts_for_api_control.settings as settings
 
 # This function returns response JSON data represented as python object
-def get_data_from_url(url):
+def get_data_from_URL(URL):
 
-    print("requesting url", url)
-
+    print("requesting URL", URL)
     # Full, pure, response
-    response = requests.get(url)
+    response = requests.get(URL)
 
     # Getting request json
     data = response.json()
