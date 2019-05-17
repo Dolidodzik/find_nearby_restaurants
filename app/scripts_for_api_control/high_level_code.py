@@ -26,12 +26,38 @@ def get_places_in_circle(location, radius, open_now=None, keyword=None, number_o
     if keyword != None:
         url += "&keyword="+str(keyword)
 
-    # Getting response from url (.results to just get results as list, I dont care about html_attributions and next_page_token here)
+    # Getting response from url (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
     places = low_level_code.get_data_from_url(url).results
 
     # Cutting places array
-    if number_of_places_to_return != None:c
+    if number_of_places_to_return != None:
         places = places[:number_of_places_to_return]
 
-    # Returning places
+    # Returning placess
     return places
+
+
+# This function returns details of place with passed ID (That is taken from Place Search (get_places_in_circle function in my case))
+# Fields is just list of strings names that can be taken from here: https://developers.google.com/places/web-service/place-data-fields
+def get_place_details(place_id, fields = None):
+
+    #url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
+    url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
+
+
+    if fields != None:
+        # Adding fields parameter with simple loop
+        url += "&fields="
+        # First field is the only that dont need come
+        url += fields[0]
+        # removing this field from list
+        fields.pop(0)
+
+        # Loop through list to add every field to URL
+        for field in fields:
+            url += "," + field
+
+    # Getting response from url (.results to just get results as object, I dont care about html_attributions and next_page_token here)
+    place_details = low_level_code.get_data_from_url(url).result
+
+    return place_details

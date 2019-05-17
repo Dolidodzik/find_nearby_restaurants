@@ -16,9 +16,22 @@
     this is /app/templates/home.html
     <br/><br/>
 
-    data: <br/>
-    {{ data }}
-    <br/><br/>
+    <h1> data: </h1> <br/><br/>
+    {% for place in places %}
+      <div class = "place_header">
+        <img src = "{{ place.icon }}"/>
+        <h5> {{ place.name }} </h5>
+        {{ place.vicinity }} <br/>
+        {{ place.id }} <br/>
+      </div>
+      <br/><br/><br/>
+    {% endfor %}
+    <br/><br/><br/><br/><br/><br/>
+
+    Details:
+    {{ details }}
+
+    </details> }}
 
     <div id = "demo">  </div>
 

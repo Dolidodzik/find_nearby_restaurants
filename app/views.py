@@ -19,8 +19,4 @@ def test(request):
         # This should be replaced with data about found placess
         return HttpResponse("JD KRASNOLUDA")
     else:
-        print("type of data:", type(SFAC.data))
-
-        template_data = SFAC.data
-
-        return render(request, "home.html", {"data": template_data})
+        return render(request, "home.html", {"places": SFAC.places, "details": SFAC.place_details})
