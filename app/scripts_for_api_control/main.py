@@ -19,4 +19,4 @@ url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33
 #data = low_level_code.get_data_from_url(url)
 
 # Searching for places in location, in 99999 meters long radius that is openned now, and contain keyword "pizza" somewhere
-data = code.get_places_in_circle(location, 99999, open_now=True, keyword="pizza")
+data = code.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", number_of_places_to_return=5)

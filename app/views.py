@@ -20,4 +20,7 @@ def test(request):
         return HttpResponse("JD KRASNOLUDA")
     else:
         print("type of data:", type(SFAC.data))
-        return render(request, "home.html", {"data": SFAC.data})
+
+        template_data = SFAC.data
+
+        return render(request, "home.html", {"data": template_data})
