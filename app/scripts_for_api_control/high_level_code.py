@@ -39,7 +39,8 @@ def get_places_in_circle(location, radius, open_now=None, keyword=None, number_o
 
 # This function returns details of place with passed ID (That is taken from Place Search (get_places_in_circle function in my case))
 # Fields is just list of strings names that can be taken from here: https://developers.google.com/places/web-service/place-data-fields
-def get_place_details(place_id, fields = None):
+# Default value of fields is taken from settings.fields
+def get_place_details(place_id, fields = settings.fields):
 
     #url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
     url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY

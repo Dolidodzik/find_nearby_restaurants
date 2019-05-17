@@ -22,8 +22,5 @@ url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33
 places = code.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", number_of_places_to_return=5)
 
 
-# list of strings that contains names of fields that I want to take from API in get_place_details function
-fields = ['name', 'rating', 'website', 'opening_hours', 'formatted_phone_number', 'vicinity']
-
 # This placeid should be taken from template, but I can use it like this for a dev time
-place_details = code.get_place_details("ChIJN1t_tDeuEmsRUsoyG83frY4", fields=fields)
+place_details = code.get_place_details("ChIJN1t_tDeuEmsRUsoyG83frY4")
