@@ -12,8 +12,8 @@ import app.scripts_for_api_control.low_level_code as low_level_code
 # radius is just intiger (1 = 1 meter),
 # location should be formated like this:   location = {'Latitude': '50.140408099999995', 'Longitude': '22.0593805'}
 # if open_now == True function will return only places openned now. If open_now == false or None it won't change anythnig
-# number_of_places_to_return control how much places will be returned. If == None, every place will be returned
-def get_places_in_circle(location, radius, open_now=None, keyword=None, number_of_places_to_return=None):
+# max_number_of_places_to_return control how much places will be returned. If == None, every place will be returned
+def get_places_in_circle(location, radius, open_now=None, keyword=None, max_number_of_places_to_return=None, minprice=None, maxprice=None):
 
     # Setting up URL
     URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ location['Latitude'] +","+ location['Longitude'] +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
@@ -26,12 +26,19 @@ def get_places_in_circle(location, radius, open_now=None, keyword=None, number_o
     if keyword != None:
         URL += "&keyword="+str(keyword)
 
+    # Adding min and max price if passed
+    if minprice != None:
+        URL += "&minprice="+str(minprice)
+
+    if maxprice != None:
+        URL += "&maxprice="+str(maxprice)
+
     # Getting response from URL (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
     places = low_level_code.get_data_from_URL(URL).results
 
     # Cutting places array
-    if number_of_places_to_return != None:
-        places = places[:number_of_places_to_return]
+    if max_number_of_places_to_return != None:
+        places = places[:max_number_of_places_to_return]
 
     # Returning placess
     return places
