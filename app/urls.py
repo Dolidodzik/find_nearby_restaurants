@@ -3,6 +3,6 @@ from app.views import *
 
 
 urlpatterns = [
-    path('test/', test, name='home'),
-    path('', test, name='home'),
+    path('', home, name='home'),
+    path('place/<slug:place_id>', place_details, name="place_details"),
 ]
