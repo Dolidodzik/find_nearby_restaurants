@@ -1,7 +1,6 @@
 <html>
   <head>
     <title> FEST APKA </title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <style>
       body{
         padding-left: 30px !important;
@@ -16,13 +15,11 @@
     this is /app/templates/place_details.html
     <br/><br/>
 
-    <h1> data: </h1> <br/><br/>
-    
-    <br/><br/><br/><br/><br/><br/>
+    <h1> Details: </h1> <br/><br/>
 
-    Details:
-    {{ details }}
-
+    <!-- information about opening hours -->
+    Open now: {{ details.opening_hours.open_now }} <br/>
+    Website: {{ details.website }}
 
 
     <script>

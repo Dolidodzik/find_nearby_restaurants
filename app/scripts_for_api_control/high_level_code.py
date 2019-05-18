@@ -69,6 +69,10 @@ class places_info():
                 URL += "," + field
 
         # Getting response from URL (.results to just get results as object, I dont care about html_attributions and next_page_token here)
-        place_details = low_level_code.get_data_from_URL(URL)
+        place_details = low_level_code.get_data_from_URL(URL).result
 
         return place_details
+
+
+    def get_place_photos():
+        return 0
