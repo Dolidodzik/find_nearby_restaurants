@@ -15,3 +15,7 @@ location = {'Latitude': '50.143232', 'Longitude': '22.067609599999997'}
 
 # Searching for places in location, in 99999 meters long radius that is openned now, and contain keyword "pizza" somewhere, with minprice = 2 and maxpirce = 4
 places = places_info.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", max_number_of_places_to_return=5, maxprice=4, minprice=2)
+
+print("STARRT\n\n\n")
+places_info.get_place_photo_by_reference(None)
+print("STOP\n\n\n")

@@ -3,15 +3,16 @@
 import requests
 import json
 from collections import namedtuple
+import urllib.request
 
 import app.scripts_for_api_control.settings as settings
 
 # This function returns response JSON data represented as python object
-def get_data_from_URL(URL):
+def get_data_from_URL(URL, stream=False):
 
     print("requesting URL", URL)
     # Full, pure, response
-    response = requests.get(URL)
+    response = requests.get(URL, stream)
 
     # Getting request json
     data = response.json()

@@ -74,5 +74,12 @@ class places_info():
         return place_details
 
 
-    def get_place_photos():
+    def get_place_photo_by_reference(photo_reference):
+
+        URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key="+settings.KEY
+
+        URL += "&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU"
+
+        print(URL)
+
         return 0
