@@ -9,6 +9,16 @@ import app.scripts_for_api_control.settings as settings
 import app.scripts_for_api_control.low_level_code as low_level_code
 
 
+from django.core import files
+from io import BytesIO
+import requests
+from app.models import *
+from django.core.files import File
+import os
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
+
+
 class places_info():
 
     # This function return places in radius from location
@@ -76,10 +86,19 @@ class places_info():
 
     def get_place_photo_by_reference(photo_reference):
 
+        # Creating URL to request
         URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key="+settings.KEY
+        URL += "&photoreference="+photo_reference
 
-        URL += "&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU"
+        # Getting image from API as temponary file
+        img_temp = NamedTemporaryFile(delete=True)
+        img_temp.write(urlopen(URL).read())
+        img_temp.flush()
 
-        print(URL)
+        # Saving new row
+        CI = Cached_Image(image_url=URL)
+        CI.image_file.save("image test name", File(img_temp))
+        CI.save()
+
 
         return 0

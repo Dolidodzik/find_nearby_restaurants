@@ -8,11 +8,11 @@ import urllib.request
 import app.scripts_for_api_control.settings as settings
 
 # This function returns response JSON data represented as python object
-def get_data_from_URL(URL, stream=False):
+def get_data_from_URL(URL):
 
     print("requesting URL", URL)
     # Full, pure, response
-    response = requests.get(URL, stream)
+    response = requests.get(URL)
 
     # Getting request json
     data = response.json()
@@ -24,3 +24,6 @@ def get_data_from_URL(URL, stream=False):
     data = json.loads(data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
 
     return data
+
+def get_image_from_URL(URL):
+    pass
