@@ -67,14 +67,14 @@ class places_info():
 
         #URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
         URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
-        print("DETAILS", URL)
+        #print("DETAILS", URL)
 
         if fields != None:
             # Adding fields parameter with simple loop
             URL += "&fields="
             # First field is the only that dont need come
             URL += fields[0]
-        
+
             # Loop through list to add every field to URL
             for field in fields:
                 URL += "," + field
@@ -87,8 +87,7 @@ class places_info():
 
     def get_place_photo_by_reference(photo_reference):
 
-        # This will be filled with real image in code below
-        image = None
+
 
         # Getting instace of Cached_Image and checking if this instance exists
         Cached_Image_Instance = Cached_Image.objects.filter(reference=photo_reference)
@@ -104,15 +103,11 @@ class places_info():
 
             # Check if image is old enough
             if Cached_Image_Instance.updated_at < cached_image_expire_date:
-                image = low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
-            else:
-                # Else everything is OK, it isnt time to re-get the image from api yet, but i have to get image to return to template
-                pass
+                low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
+
         # If this image doesn't exist, I have to simply get it
         else:
-            image = low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
+            low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
 
-
-
-
-        return 0
+        # Retruning newly added image
+        return Cached_Image.objects.filter(reference=photo_reference).first()

@@ -15,11 +15,11 @@
     this is /app/templates/place_details.html
     <br/><br/>
 
-    <h1> Details: </h1> <br/><br/>
+    <h1> Details of {{ details.name }}: </h1> <br/><br/>
 
     <!-- information about opening hours -->
 
-
+    <button> Show me gallery of images related with this place! </button> <br/>
 
     Open now: {{ details.opening_hours.open_now }} <br/>
     Open now: {{ details.opening_hours.weekday_text }} <br/>
@@ -28,10 +28,63 @@
 
     Website: {{ details.website }} <br/>
     Phone nuber: {{ details.international_phone_number }} <br/>
+    Website: {{ details.vicinity }} <br/>
 
-    Rating {{ details.rating }}
+    Rating: {{ details.rating }}
+
+    <br/><br/>
+    <h2> Reviews: </h2>
+    {% for review in details.reviews %}
+      <br/>
+      Author: {{ review.author_name }} <br/>
+      Rate: {{ review.rating }} <br/>
+      {{ review.text }} <br/>
+      <br/>
+    {% endfor %}
+
 
     <script>
+      // Adding AJAX setup for every feature request
+      $.ajaxSetup({
+
+         // For CSRF protection
+         beforeSend: function(xhr, settings) {
+
+             function getCookie(name) {
+                 var cookieValue = null;
+                 if (document.cookie && document.cookie != '') {
+                     var cookies = document.cookie.split(';');
+                     for (var i = 0; i < cookies.length; i++) {
+                         var cookie = jQuery.trim(cookies[i]);
+                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 return cookieValue;
+             }
+             if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+             }
+         }
+       });
+
+       function RequestGalleryOfImages(data_to_send){
+         $(document).ready(function() {
+             $.ajax({
+                 method: 'POST',
+                 url: '/',
+                 data: {'location': data_to_send},
+                 success: function (data) {
+                      //alert("AJAX WORKED! DATA: "+data);
+                 },
+                 error: function (data) {
+                      alert("ERROR AJAX CALL DIDNT WORK");
+                 }
+             });
+         });
+       }
 
     </script>
 

@@ -19,7 +19,7 @@ from tempfile import NamedTemporaryFile
 # This function returns response JSON data represented as python object
 def get_data_from_URL(URL):
 
-    print("requesting URL", URL)
+    #print("requesting URL", URL)
     # Full, pure, response
     response = requests.get(URL)
 
