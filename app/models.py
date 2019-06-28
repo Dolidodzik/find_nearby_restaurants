@@ -29,7 +29,7 @@ class Cached_Image(models.Model):
         img_temp.write(urlopen(URL).read())
         img_temp.flush()
 
-        self.image_file.save("image test name", File(img_temp))
+        self.image_file.save("CACHED_IMAGE", File(img_temp))
 
     def __str__(self):
         return self.reference

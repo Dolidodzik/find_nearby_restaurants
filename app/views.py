@@ -24,10 +24,14 @@ def home(request):
 
 
 def place_details(request, place_id):
-    #data = places_info.get_place_details("ChIJN1t_tDeuEmsRUsoyG83frY4")
 
-    # Getting details of place whose id is passed in url
-    data = places_info.get_place_details( str(place_id) )
+    '''session_name = 'place_details' + str(place_id)
+
+    if not request.session[session_name] == None:
+        request.session[session_name] = places_info.get_place_details(place_id)
+    print("Data:", request.session[session_name])
+    request.session[session_name] = places_info.get_place_details(place_id)'''
+
 
     # Rendering template with place details data
-    return render(request, "place_details.html", {"details": data})
+    return render(request, "place_details.html", {"details": places_info.get_place_details(place_id)})

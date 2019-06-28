@@ -18,9 +18,18 @@
     <h1> Details: </h1> <br/><br/>
 
     <!-- information about opening hours -->
-    Open now: {{ details.opening_hours.open_now }} <br/>
-    Website: {{ details.website }}
 
+
+
+    Open now: {{ details.opening_hours.open_now }} <br/>
+    Open now: {{ details.opening_hours.weekday_text }} <br/>
+
+    <br/>
+
+    Website: {{ details.website }} <br/>
+    Phone nuber: {{ details.international_phone_number }} <br/>
+
+    Rating {{ details.rating }}
 
     <script>
 

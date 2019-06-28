@@ -20,7 +20,7 @@
     {% for place in places %}
       <div class = "place_header">
         <img src = "{{ place.icon }}"/>
-        <h4> {{ place.name }} </h4>
+        <a href = "/place/{{ place.place_id }}"> <h4> {{ place.name }} </h4> </a>
         place.vicinity {{ place.vicinity }} <br/>
         place.place_id {{ place.place_id }} <br/>
       </div>

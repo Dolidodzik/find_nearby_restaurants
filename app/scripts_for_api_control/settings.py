@@ -7,4 +7,4 @@ KEY = 'AIzaSyBr2_qvl5DWf5gGNnAsv4LHFmlpDgUpqK4'
 fields = ['name', 'rating', 'website', 'opening_hours', 'formatted_phone_number', 'vicinity']
 
 # Number of days after that cached image will be updated from api
-cache_time = 0
+cache_time = 14

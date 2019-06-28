@@ -52,11 +52,9 @@ def get_image_from_URL_and_save_to_DB(photo_reference):
         # Saving changes to DB
         to_save_image_instance = Cached_Image.objects.get(pk=Cached_Image_Instance.pk)
         to_save_image_instance.reference = photo_reference
-        to_save_image_instance.save()
         to_save_image_instance.save_image()
     else:
         to_save_image_instance = Cached_Image(reference=photo_reference)
-        to_save_image_instance.save()
         to_save_image_instance.save_image()
 
     # Getting iamge

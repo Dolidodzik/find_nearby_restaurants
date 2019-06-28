@@ -67,16 +67,14 @@ class places_info():
 
         #URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
         URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
-
+        print("DETAILS", URL)
 
         if fields != None:
             # Adding fields parameter with simple loop
             URL += "&fields="
             # First field is the only that dont need come
             URL += fields[0]
-            # removing this field from list
-            fields.pop(0)
-
+        
             # Loop through list to add every field to URL
             for field in fields:
                 URL += "," + field
@@ -106,10 +104,9 @@ class places_info():
 
             # Check if image is old enough
             if Cached_Image_Instance.updated_at < cached_image_expire_date:
-                print("Re-getting image...")
                 image = low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
             else:
-                # Else everything is OK, it isnt time to re-get the image yet, but i have to get image to return to template
+                # Else everything is OK, it isnt time to re-get the image from api yet, but i have to get image to return to template
                 pass
         # If this image doesn't exist, I have to simply get it
         else:
