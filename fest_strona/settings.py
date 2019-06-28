@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'fest_strona.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/places_app.cnf',
-        },
-    }
+        'NAME': 'food_application',
+        'USER': 'root',
+        'PASSWORD': 'DemoPass#00',
+      }
 }
 
 

@@ -18,6 +18,9 @@ import os
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile
 
+import datetime
+from django.utils import timezone
+
 
 class places_info():
 
@@ -86,19 +89,33 @@ class places_info():
 
     def get_place_photo_by_reference(photo_reference):
 
-        # Creating URL to request
-        URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key="+settings.KEY
-        URL += "&photoreference="+photo_reference
+        # This will be filled with real image in code below
+        image = None
 
-        # Getting image from API as temponary file
-        img_temp = NamedTemporaryFile(delete=True)
-        img_temp.write(urlopen(URL).read())
-        img_temp.flush()
+        # Getting instace of Cached_Image and checking if this instance exists
+        Cached_Image_Instance = Cached_Image.objects.filter(reference=photo_reference)
 
-        # Saving new row
-        CI = Cached_Image(image_url=URL)
-        CI.image_file.save("image test name", File(img_temp))
-        CI.save()
+        # Checking if got image exists
+        if Cached_Image_Instance.exists():
+
+            # Getting a real instance of object instead of queryset
+            Cached_Image_Instance = Cached_Image_Instance.first()
+
+            # Setting up date
+            cached_image_expire_date = timezone.now() + timezone.timedelta(days=settings.cache_time)
+
+            # Check if image is old enough
+            if Cached_Image_Instance.updated_at < cached_image_expire_date:
+                print("Re-getting image...")
+                image = low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
+            else:
+                # Else everything is OK, it isnt time to re-get the image yet, but i have to get image to return to template
+                pass
+        # If this image doesn't exist, I have to simply get it
+        else:
+            image = low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
+
+
 
 
         return 0

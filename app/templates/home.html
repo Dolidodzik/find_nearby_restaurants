@@ -20,9 +20,9 @@
     {% for place in places %}
       <div class = "place_header">
         <img src = "{{ place.icon }}"/>
-        <h5> {{ place.name }} </h5>
-        {{ place.vicinity }} <br/>
-        {{ place.place_id }}
+        <h4> {{ place.name }} </h4>
+        place.vicinity {{ place.vicinity }} <br/>
+        place.place_id {{ place.place_id }} <br/>
       </div>
       <br/><br/><br/>
     {% endfor %}
