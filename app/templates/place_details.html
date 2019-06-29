@@ -85,14 +85,14 @@
        });
 
        function RequestGalleryOfImages(){
-         console.log("{{ details }}")
+
          $(document).ready(function() {
              $.ajax({
                  method: 'POST',
-                 url: '/image_gallery/{{ details.place_id }}',
-                 data: {'details': "{{ details }}"},
+                 url: '/image_gallery/{{ details.result.place_id }}',
+                 data: {'details': "{{ details.result }}"},
                  success: function (data) {
-                      console.log(data)
+                      console.log(data[0])
                  },
                  error: function (data) {
                       alert("ERROR AJAX CALL DIDNT WORK");

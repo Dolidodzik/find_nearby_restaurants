@@ -83,8 +83,6 @@ class places_info():
 
     def get_place_photo_by_reference(photo_reference):
 
-
-
         # Getting instace of Cached_Image and checking if this instance exists
         Cached_Image_Instance = Cached_Image.objects.filter(reference=photo_reference)
 
@@ -105,5 +103,6 @@ class places_info():
         else:
             low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
 
-        # Retruning newly added image
-        return Cached_Image.objects.filter(reference=photo_reference).first()
+        # Retruning newly added image/or previously cached image
+        image = Cached_Image.objects.filter(reference=photo_reference).first()
+        return image

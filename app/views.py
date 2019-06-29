@@ -5,6 +5,9 @@ from django.http import HttpResponse, JsonResponse
 import app.scripts_for_api_control.main as SFAC
 from app.scripts_for_api_control.high_level_code import *
 import ast
+from django.core import serializers
+
+
 
 def home(request):
 
@@ -44,8 +47,16 @@ def image_gallery(request, place_id):
 
     # Getting object of place details
     details = places_info.get_place_details(place_id)
-    #print(type(details))
-    # (Later when i setup frontend framework I should get it with request.POST['data'] to dont use API that much)
-    #reviews = details['reviews']
+    details = details["result"]
 
-    return HttpResponse("ELODJ")
+    photos = details["photos"]
+
+    photo_list = []
+
+    for photo in photos:
+        photo_reference = photo["photo_reference"]
+        photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference) ] )
+
+    print(photo_list[0].image_file.url)
+
+    return HttpResponse("elo")
