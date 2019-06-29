@@ -17,7 +17,7 @@
     <br/><br/>
 
     <h1> data: </h1> <br/><br/>
-    {% for place in places %}
+    {% for place in places.results %}
       <div class = "place_header">
         <img src = "{{ place.icon }}"/>
         <a href = "/place/{{ place.place_id }}"> <h4> {{ place.name }} </h4> </a>

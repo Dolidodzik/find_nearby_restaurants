@@ -9,38 +9,52 @@
         color: #aaa;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   </head>
   <body>
 
-    this is /app/templates/place_details.html
-    <br/><br/>
+    this is /app/templates/place_details.html <br/><br/>
 
-    <h1> Details of {{ details.name }}: </h1> <br/><br/>
 
-    <!-- information about opening hours -->
 
-    <button> Show me gallery of images related with this place! </button> <br/>
-
-    Open now: {{ details.opening_hours.open_now }} <br/>
-    Open now: {{ details.opening_hours.weekday_text }} <br/>
-
+    <br/><br/><br/>
+    <a href="/"> back to home </a>
     <br/>
 
-    Website: {{ details.website }} <br/>
-    Phone nuber: {{ details.international_phone_number }} <br/>
-    Website: {{ details.vicinity }} <br/>
 
-    Rating: {{ details.rating }}
+    <!-- Setting details.result as details to easier syntax -->
+    {% with details.result as details %}
 
-    <br/><br/>
-    <h2> Reviews: </h2>
-    {% for review in details.reviews %}
-      <br/>
-      Author: {{ review.author_name }} <br/>
-      Rate: {{ review.rating }} <br/>
-      {{ review.text }} <br/>
-      <br/>
-    {% endfor %}
+      <h1> Details of {{ details.name }}: </h1> <br/><br/>
+
+      <!-- information about opening hours -->
+
+      <button onclick="RequestGalleryOfImages()"> Show me gallery of images related with this place! </button> <br/>
+
+
+        Open now: {{ details.opening_hours.open_now }} <br/>
+        Open now: {{ details.opening_hours.weekday_text }} <br/>
+
+        <br/>
+
+        Website: {{ details.website }} <br/>
+        Phone nuber: {{ details.international_phone_number }} <br/>
+        Vincinty: {{ details.vicinity }} <br/>
+
+        Rating: {{ details.rating }}
+        Number of votes: {{ details.user_ratings_total }}
+
+        <br/><br/>
+        <h2> Reviews: </h2>
+        {% for review in details.reviews %}
+          <br/>
+          Author: {{ review.author_name }} <br/>
+          Rate: {{ review.rating }} <br/>
+          {{ review.text }} <br/>
+          <br/>
+        {% endfor %}
+
+    {% endwith %}
 
 
     <script>
@@ -70,20 +84,22 @@
          }
        });
 
-       function RequestGalleryOfImages(data_to_send){
+       function RequestGalleryOfImages(){
+         console.log("{{ details }}")
          $(document).ready(function() {
              $.ajax({
                  method: 'POST',
-                 url: '/',
-                 data: {'location': data_to_send},
+                 url: '/image_gallery/{{ details.place_id }}',
+                 data: {'details': "{{ details }}"},
                  success: function (data) {
-                      //alert("AJAX WORKED! DATA: "+data);
+                      console.log(data)
                  },
                  error: function (data) {
                       alert("ERROR AJAX CALL DIDNT WORK");
                  }
              });
          });
+
        }
 
     </script>

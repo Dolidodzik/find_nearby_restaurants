@@ -29,7 +29,7 @@ class places_info():
     # location should be formated like this:   location = {'Latitude': '50.140408099999995', 'Longitude': '22.0593805'}
     # if open_now == True function will return only places openned now. If open_now == false or None it won't change anythnig
     # max_number_of_places_to_return control how much places will be returned. If == None, every place will be returned
-    def get_places_in_circle(location, radius, open_now=None, keyword=None, max_number_of_places_to_return=None, minprice=None, maxprice=None):
+    def get_places_in_circle(location, radius, open_now=None, keyword=None, minprice=None, maxprice=None):
 
         # Setting up URL
         URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ location['Latitude'] +","+ location['Longitude'] +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
@@ -50,11 +50,7 @@ class places_info():
             URL += "&maxprice="+str(maxprice)
 
         # Getting response from URL (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
-        places = low_level_code.get_data_from_URL(URL).results
-
-        # Cutting places array
-        if max_number_of_places_to_return != None:
-            places = places[:max_number_of_places_to_return]
+        places = low_level_code.get_data_from_URL(URL)
 
         # Returning placess
         return places
@@ -67,7 +63,7 @@ class places_info():
 
         #URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
         URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
-        #print("DETAILS", URL)
+        print("DETAILS", URL)
 
         if fields != None:
             # Adding fields parameter with simple loop
@@ -80,7 +76,7 @@ class places_info():
                 URL += "," + field
 
         # Getting response from URL (.results to just get results as object, I dont care about html_attributions and next_page_token here)
-        place_details = low_level_code.get_data_from_URL(URL).result
+        place_details = low_level_code.get_data_from_URL(URL)
 
         return place_details
 

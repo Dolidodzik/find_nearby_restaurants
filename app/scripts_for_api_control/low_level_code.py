@@ -15,6 +15,8 @@ from django.core.files import File
 import os
 from urllib.request import urlopen
 from tempfile import NamedTemporaryFile
+import urllib
+
 
 # This function returns response JSON data represented as python object
 def get_data_from_URL(URL):
@@ -24,13 +26,7 @@ def get_data_from_URL(URL):
     response = requests.get(URL)
 
     # Getting request json
-    data = response.json()
-
-    # converting dict to string
-    data = json.dumps(data)
-
-    # converting JSON to python object
-    data = json.loads(data, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+    data = json.loads(response.text)
 
     return data
 
