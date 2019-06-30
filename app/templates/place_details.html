@@ -92,7 +92,8 @@
                  url: '/image_gallery/{{ details.result.place_id }}',
                  data: {'details': "{{ details.result }}"},
                  success: function (data) {
-                      console.log(data[0])
+                      console.log("List of images: ")
+                      console.log(data)
                  },
                  error: function (data) {
                       alert("ERROR AJAX CALL DIDNT WORK");

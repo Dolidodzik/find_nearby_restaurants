@@ -55,8 +55,8 @@ def image_gallery(request, place_id):
 
     for photo in photos:
         photo_reference = photo["photo_reference"]
-        photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference) ] )
+        photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference).image_file.url ] )
 
-    print(photo_list[0].image_file.url)
+    print(photo_list)
 
-    return HttpResponse("elo")
+    return JsonResponse(photo_list, safe=False)
