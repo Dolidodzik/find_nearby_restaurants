@@ -40,7 +40,7 @@ class list_of_places(views.APIView):
 class place_details(views.APIView):
     def get(self, request, place_id):
 
-        # Getting places list json and image
+        # Getting places list json
         details = places_info.get_place_details(place_id)
 
         data= [{
@@ -52,45 +52,27 @@ class place_details(views.APIView):
         return Response(results)
 
 
-# OLD ONLY DJANGO VIEWS
-# DONE
-'''def home(request):
+# This view returns JSON that contains links to (/media/) cached images (connected with this place in google api)
+# (if desired images haven't been chaced in SFAC.settings cache_time they will be re-requested from google api)
+class image_gallery(views.APIView):
+    def get(self, request, place_id):
 
-    # Getting ajax request
-    if request.is_ajax():
+        # Getting places list json and image
+        details = places_info.get_place_details(place_id)
+        details = details["result"]
 
-        # Storing location data from request
-        location = {}
-        location['Latitude'] = request.POST['location[Latitude]']
-        location['Longitude'] = request.POST['location[Longitude]']
+        photos = details["photos"]
 
-        # This should be replaced with data about found places
-        return HttpResponse("JD KRASNOLUDA")
-    else:
-        return render(request, "home.html", {"places": SFAC.places})'''
+        photo_list = []
 
+        for photo in photos:
+            photo_reference = photo["photo_reference"]
+            photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference).image_file.url ] )
 
-'''def place_details(request, place_id):
+        data= [{
+            "json_data": photo_list
+        }]
 
-    details = places_info.get_place_details(place_id)
+        results = places_list_serializer(data, many=True).data
 
-    # Rendering template with place details data
-    return render(request, "place_details.html", {"details": details})'''
-
-
-# This view returns JSON of images to template
-def image_gallery(request, place_id):
-
-    # Getting object of place details
-    details = places_info.get_place_details(place_id)
-    details = details["result"]
-
-    photos = details["photos"]
-
-    photo_list = []
-
-    for photo in photos:
-        photo_reference = photo["photo_reference"]
-        photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference).image_file.url ] )
-
-    return JsonResponse(photo_list, safe=False)
+        return Response(results)
