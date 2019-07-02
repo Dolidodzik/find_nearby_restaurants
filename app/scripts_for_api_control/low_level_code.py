@@ -19,14 +19,18 @@ import urllib
 
 
 # This function returns response JSON data represented as python object
-def get_data_from_URL(URL):
+# If JSON is true, JSON data will be returned instead of JSON converted to dict
+def get_data_from_URL(URL, JSON=False):
 
     #print("requesting URL", URL)
     # Full, pure, response
     response = requests.get(URL)
 
-    # Getting request json
-    data = json.loads(response.text)
+    if JSON == False:
+        # Getting request json
+        data = json.loads(response.text)
+    else:
+        data = response.text
 
     return data
 

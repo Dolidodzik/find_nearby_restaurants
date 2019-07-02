@@ -3,12 +3,38 @@ from django.http import HttpResponse, JsonResponse
 
 # Importing scripts for api control files
 import app.scripts_for_api_control.main as SFAC
-from app.scripts_for_api_control.high_level_code import *
+from app.scripts_for_api_control.high_level_code import places_info
 import ast
-from django.core import serializers
+
+from rest_framework import views
+from rest_framework.response import Response
+from .serializers import *
+
+
+# NEW REST FRAMEWORK VIEWS
+class list_of_places(views.APIView):
+    def get(self, request):
+
+        # Getting location from request
+        '''location = {}
+        location['Latitude'] = request.GET['location[Latitude]']
+        location['Longitude'] = request.GET['location[Longitude]']'''
+        location = {'Latitude': '50.143232', 'Longitude': '22.067609599999997'}
+
+        # Other data should be also taken from request (like open_now, keyword etc)
+
+
+        data= [ {"json_data":
+            places_info.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", maxprice=4, minprice=2
+        )}]
+
+        results = places_list_serializer(data, many=True).data
+
+        return Response(results)
 
 
 
+# OLD ONLY DJANGO VIEWS
 def home(request):
 
     # Getting ajax request
@@ -24,6 +50,7 @@ def home(request):
         # This should be replaced with data about found places
         return HttpResponse("JD KRASNOLUDA")
     else:
+        print(SFAC.places)
         return render(request, "home.html", {"places": SFAC.places})
 
 
@@ -56,7 +83,5 @@ def image_gallery(request, place_id):
     for photo in photos:
         photo_reference = photo["photo_reference"]
         photo_list.extend( [ places_info.get_place_photo_by_reference(photo_reference).image_file.url ] )
-
-    print(photo_list)
 
     return JsonResponse(photo_list, safe=False)
