@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'rest_framework',
 
     'app',
@@ -132,3 +132,16 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
+
+CACHE_ROOT = os.path.join(BASE_DIR, 'CACHE/')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': CACHE_ROOT,
+        # 1 week cache time (in seconds)
+        'TIMEOUT': 604800,
+        # Test cache for 0 seconds (effectivly no cache)
+        #'TIMEOUT': 0,
+    }
+}

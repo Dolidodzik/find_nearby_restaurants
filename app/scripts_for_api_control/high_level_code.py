@@ -1,26 +1,13 @@
 # This file contain code, fucntions, classes that can be called in "main.py" from here only.
 # This file contains "high level" code, and use another python files that contain "low level code"
 
-import requests
-import json
-from collections import namedtuple
 
 import app.scripts_for_api_control.settings as settings
 import app.scripts_for_api_control.low_level_code as low_level_code
-
-
-from django.core import files
-from io import BytesIO
-import requests
 from app.models import *
-from django.core.files import File
-import os
-from urllib.request import urlopen
-from tempfile import NamedTemporaryFile
-
-import datetime
 from django.utils import timezone
-
+from django.core.cache import cache
+from django.conf import settings as django_settings
 
 class places_info():
 
@@ -56,12 +43,13 @@ class places_info():
         return places
 
 
+    # This function simply returns detail data got from google api by given place_id
     # This function returns details of place with passed ID (That is taken from Place Search (get_places_in_circle function in my case))
     # Fields is just list of strings names that can be taken from here: https://developers.google.com/places/web-service/place-data-fields
     # Default value of fields is taken from settings.fields
     def get_place_details(place_id, fields = settings.fields):
 
-        #URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&fields=name,rating,formatted_phone_number&key="+settings.KEY
+        # Setting up URL to sending requests
         URL = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ place_id +"&key="+settings.KEY
         print("DETAILS", URL)
 
@@ -75,34 +63,20 @@ class places_info():
             for field in fields:
                 URL += "," + field
 
-        # Getting response from URL (.results to just get results as object, I dont care about html_attributions and next_page_token here)
-        place_details = low_level_code.get_data_from_URL(URL)
+        # Setting up cache key
+        cache_key = "PLACE_DETAILS_CACHE_"+place_id
 
-        return place_details
+        # Getting previous cache
+        cached_data = cache.get(cache_key)
 
-
-    def get_place_photo_by_reference(photo_reference):
-
-        # Getting instace of Cached_Image and checking if this instance exists
-        Cached_Image_Instance = Cached_Image.objects.filter(reference=photo_reference)
-
-        # Checking if got image exists
-        if Cached_Image_Instance.exists():
-
-            # Getting a real instance of object instead of queryset
-            Cached_Image_Instance = Cached_Image_Instance.first()
-
-            # Setting up date
-            cached_image_expire_date = timezone.now() + timezone.timedelta(days=settings.cache_time)
-
-            # Check if image is old enough
-            if Cached_Image_Instance.updated_at < cached_image_expire_date:
-                low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
-
-        # If this image doesn't exist, I have to simply get it
+        # Checking if previously cached data exists
+        if cached_data != None:
+            print("EXISTIS")
+            # Returning cached data
+            return cached_data
         else:
-            low_level_code.get_image_from_URL_and_save_to_DB(photo_reference)
-
-        # Retruning newly added image/or previously cached image
-        image = Cached_Image.objects.filter(reference=photo_reference).first()
-        return image
+            print("DOES NOT EXISTIS")
+            # Saving cache
+            details_data = low_level_code.get_data_from_URL(URL)
+            cache.set(cache_key, details_data, django_settings.CACHES["default"]["TIMEOUT"])
+            return details_data

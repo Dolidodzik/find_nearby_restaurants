@@ -33,12 +33,3 @@ def get_data_from_URL(URL, JSON=False):
         data = response.text
 
     return data
-
-# This function saves image from given photo_reference to Cached_Image  (without any validation)
-# and returns url of this image
-def get_image_from_URL_and_save_to_DB(photo_reference):
-
-    to_save_image_instance = Cached_Image(reference=photo_reference)
-    to_save_image_instance.save_image()
-
-    return 0
