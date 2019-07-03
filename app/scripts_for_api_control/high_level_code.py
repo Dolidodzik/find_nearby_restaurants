@@ -36,11 +36,23 @@ class places_info():
         if maxprice != None:
             URL += "&maxprice="+str(maxprice)
 
-        # Getting response from URL (.results to just get results as list of objects, I dont care about html_attributions and next_page_token here)
-        places = low_level_code.get_data_from_URL(URL)
 
-        # Returning placess
-        return places
+        # Setting up cache key
+        cache_key = "PLACE_DETAILS_CACHE_"+str(location)+str(radius)
+
+        # Getting previous cache
+        cached_data = cache.get(cache_key)
+
+        # Checking if previously cached data exists
+        if cached_data != None:
+            # Returning cached data
+            return cached_data
+        else:
+            # Saving cache
+            places_data = low_level_code.get_data_from_URL(URL)
+            cache.set(cache_key, places_data, django_settings.CACHES["default"]["TIMEOUT"])
+            return places_data
+
 
 
     # This function simply returns detail data got from google api by given place_id
@@ -71,11 +83,9 @@ class places_info():
 
         # Checking if previously cached data exists
         if cached_data != None:
-            print("EXISTIS")
             # Returning cached data
             return cached_data
         else:
-            print("DOES NOT EXISTIS")
             # Saving cache
             details_data = low_level_code.get_data_from_URL(URL)
             cache.set(cache_key, details_data, django_settings.CACHES["default"]["TIMEOUT"])
