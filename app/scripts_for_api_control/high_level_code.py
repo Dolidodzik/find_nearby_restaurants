@@ -9,6 +9,12 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.conf import settings as django_settings
 
+from django.core.files import File
+import os
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
+import urllib
+
 class places_info():
 
     # This function return places in radius from location
@@ -90,3 +96,45 @@ class places_info():
             details_data = low_level_code.get_data_from_URL(URL)
             cache.set(cache_key, details_data, django_settings.CACHES["default"]["TIMEOUT"])
             return details_data
+
+    # This function returns all of the images connected with given place
+    def get_place_images_gallery(self, place_id):
+        print("CALL")
+        # Getting photos connected with given place
+        details = self.get_place_details(place_id)
+        photos = details["result"]["photos"]
+
+        # Setting up list
+        photos_urls_list = []
+
+        # Looping over photos
+        for photo in photos:
+            # Shorting later syntaxes
+            photo_ref = photo["photo_reference"]
+            # Setting up cache key
+            cache_key = "PHOTO_IMAGE" + photo_ref
+            # Getting previous cache
+            cached_data = cache.get(cache_key)
+
+            # Checking if previously cached data exists
+            if cached_data != None:
+                # Returning cached data
+                return cached_data
+            else:
+                image = "IMAGE NONE"
+
+                # Getting temp image
+                URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=" + settings.KEY
+                URL += "&photoreference=" + photo_ref
+                result = urllib.request.urlretrieve(URL)
+                img_temp = NamedTemporaryFile(delete = True)
+                img_temp.write(urlopen(URL).read())
+                img_temp.flush()
+
+                # Saving new data to cache
+                cache.set(cache_key, File(img_temp), django_settings.CACHES["default"]["TIMEOUT"])
+                return img_temp
+
+
+
+        return photos_urls_list

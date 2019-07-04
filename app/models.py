@@ -8,18 +8,11 @@ import urllib
 
 import app.scripts_for_api_control.settings as settings
 
-# dont do that, I will use django cache framework
-'''class Cached_Details(models.Model):
-    # Place id (this from google api)
-    place_id = models.CharField(max_length=255, default=None, primary_key=True)
 
-class Cached_Image(models.Model):
-    # Image reference (from google api)
+'''class Cached_Image(models.Model):
     reference = models.CharField(max_length=255, default=None, primary_key=True)
 
-    # Parent gallery of this image
-    gallery = models.ForeignKey(Cached_Details, default=None, on_delete=models.CASCADE)
-
+    # Saved image file got from google api
     image_file = models.ImageField(upload_to='cached_images', default="defaults/default.png")
 
     def save_image(self):
