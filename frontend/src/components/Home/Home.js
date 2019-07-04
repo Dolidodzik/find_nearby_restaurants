@@ -9,8 +9,8 @@ class Home extends Component {
 
         <div className="containter">
           <div className="row">
-            <header className="welcome">
-              <h1> Welcome to the [[app name]] </h1>
+            <header className="welcome col-12 top_buffer">
+              <h2> Welcome to the <br/>[[app name]] </h2>
             </header>
           </div>
         </div>
