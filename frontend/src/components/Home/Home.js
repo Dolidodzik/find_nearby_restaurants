@@ -7,12 +7,18 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
+
       pos: "NULL",
       DropDownMenuVisible: false,
+      form: {
+        open_now: true,
+        min_price: 1,
+        max_price: 5,
+        keyword: "",
+      }
     };
     this.get_position();
 
-    this.CallHomeApiRequest = this.CallHomeApiRequest.bind(this);
   }
 
   /* this function sets position to got object */
@@ -33,16 +39,29 @@ class Home extends React.Component {
     console.log(this.state.pos)
   }
 
-  ShowSearchOptions() {
-
+  HeaderClickEvent() {
+    let value = this.state.DropDownMenuVisible;
+    this.setState({
+      DropDownMenuVisible: !value
+    })
   }
 
+  OnChangeForm(){
+    console.log("EHLLO")
+    console.log(this.state)
+  }
+
+  handleSubmit(event) {
+    event.persist()
+    console.log(event.target[1].value);
+    event.preventDefault()
+  }
 
   render() {
 
     return (
-      <div className="home_component">
 
+      <div className="home_component">
         <div className="containter">
           <div className="row">
 
@@ -55,35 +74,53 @@ class Home extends React.Component {
               </header>
             <div className="spacer col-1"></div>
 
+            <form className="col-12" onSubmit={this.handleSubmit.bind(this)}>
 
-            <div className="spacer col-3"></div>
-            <div className="button_wraper col-6">
-              <button className="search mt-4 p-2 px-5" onClick={this.CallHomeApiRequest}>
-                Search!
-              </button>
-            </div>
-            <div className="spacer col-3"></div>
-
-            <div className="spacer col-2"></div>
-              <div className="col-8 mt-5">
-
-                <h5 onClick={this.ShowSearchOptions}>  Search options: <span className="dropdown_arrow"> &#9660; </span> <span className="colon"> : </span> </h5>
-
-                {
-                  this.state.DropDownMenuVisible?
-                  <div className="options" show={this.state.DropDownMenuVisible ? 1 : 0}>
-                    location, 99999, open_now=True, keyword="pizza", maxprice=4, minprice=2
-                  </div>
-                :null
-                }
-
+              <div className="button_wraper">
+                <button type="submit" className="submit_search mt-4 p-2 px-5" onClick={this.CallHomeApiRequest.bind(this)}>
+                  Search!
+                </button>
               </div>
-            <div className="spacer col-2"></div>
+
+
+                <div className="mt-5 form_fields_container">
+                  <h5 onClick={this.HeaderClickEvent.bind(this)}>
+                    Search options:
+                    { this.state.DropDownMenuVisible && <span className="up_arrow"> &#9650; </span> }
+                    { !this.state.DropDownMenuVisible && <span className="dropdown_arrow"> &#9660; </span> }
+                  </h5>
+
+                  {
+                    this.state.DropDownMenuVisible?
+                    <div className="options mt-5" show={this.state.DropDownMenuVisible ? 1 : 0}>
+
+                      <label>
+                        Open now:
+                        <input type="checkbox"className="ml-2" defaultChecked={true}/>
+                      </label>
+
+                      <label>
+                        <div className="mt-3"> Keyword: </div>
+                        <input placeholder=" &quot;Pizza&quot; for example" type="text" className="col-12 mt-2"/>
+                      </label>
+
+                      <label>
+                        <div className="mt-4"> Number of stars (from 1 to 5): </div>
+                        From:<input placeholder="From" className="col-5 mt-3 mx-2" type="number" min="1" max="5" defaultValue="1"/> <br/>
+                        To: <input placeholder="To" className="col-5 mt-2 mx-2" type="number" min="1" max="5" defaultValue="5"/>
+                      </label>
+
+                    </div>
+                  :null
+                  }
+                </div>
+
+            </form>
 
           </div>
         </div>
-
       </div>
+
     );
   }
 

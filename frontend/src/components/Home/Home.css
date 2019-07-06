@@ -6,5 +6,14 @@
   display: none;
 }
 
+.options{
+  font-size: 20px;
+}
+
+.submit_search{
+  background-color: #fafafa;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
 
 .top_buffer { margin-top: 55px; }
