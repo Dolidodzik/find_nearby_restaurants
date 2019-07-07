@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import './Home.css';
 
+
+import Fade from 'react-reveal/Fade';
+
+
 class Home extends React.Component {
 
   constructor(props) {
@@ -82,38 +86,38 @@ class Home extends React.Component {
                 </button>
               </div>
 
+                  <div className="mt-5 form_fields_container">
+                    <h5 onClick={this.HeaderClickEvent.bind(this)}>
+                      Search options:
+                      { this.state.DropDownMenuVisible && <span className="up_arrow"> &#9650; </span> }
+                      { !this.state.DropDownMenuVisible && <span className="dropdown_arrow"> &#9660; </span> }
+                    </h5>
 
-                <div className="mt-5 form_fields_container">
-                  <h5 onClick={this.HeaderClickEvent.bind(this)}>
-                    Search options:
-                    { this.state.DropDownMenuVisible && <span className="up_arrow"> &#9650; </span> }
-                    { !this.state.DropDownMenuVisible && <span className="dropdown_arrow"> &#9660; </span> }
-                  </h5>
 
-                  {
-                    this.state.DropDownMenuVisible?
-                    <div className="options mt-5" show={this.state.DropDownMenuVisible ? 1 : 0}>
+                      <Fade when={this.state.DropDownMenuVisible}>
+                        <div className="options mt-5" show={this.state.DropDownMenuVisible ? 1 : 0}>
 
-                      <label>
-                        Open now:
-                        <input type="checkbox"className="ml-2" defaultChecked={true}/>
-                      </label>
+                          <label>
+                            Open now:
+                            <input type="checkbox"className="ml-2" defaultChecked={true}/>
+                          </label>
 
-                      <label>
-                        <div className="mt-3"> Keyword: </div>
-                        <input placeholder=" &quot;Pizza&quot; for example" type="text" className="col-12 mt-2"/>
-                      </label>
+                          <label>
+                            <div className="mt-3"> Keyword: </div>
+                            <input placeholder=" &quot;Pizza&quot; for example" type="text" className="col-12 mt-2"/>
+                          </label>
 
-                      <label>
-                        <div className="mt-4"> Number of stars (from 1 to 5): </div>
-                        From:<input placeholder="From" className="col-5 mt-3 mx-2" type="number" min="1" max="5" defaultValue="1"/> <br/>
-                        To: <input placeholder="To" className="col-5 mt-2 mx-2" type="number" min="1" max="5" defaultValue="5"/>
-                      </label>
+                          <label>
+                            <div className="mt-4"> Number of stars (from 1 to 5): </div>
+                            From:<input placeholder="From" className="col-5 mt-3 mx-2" type="number" min="1" max="5" defaultValue="1"/> <br/>
+                            To: <input placeholder="To" className="col-5 mt-2 mx-2" type="number" min="1" max="5" defaultValue="5"/>
+                          </label>
+                        </div>
+                      </Fade>
 
-                    </div>
-                  :null
-                  }
-                </div>
+
+                  </div>
+
 
             </form>
 
@@ -125,5 +129,7 @@ class Home extends React.Component {
   }
 
 }
+
+
 
 export default Home;
