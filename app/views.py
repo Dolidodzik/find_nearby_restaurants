@@ -17,13 +17,8 @@ from .serializers import *
 class list_of_places(views.APIView):
     def get(self, request):
 
-        # Getting location from request
-        '''location = {}
-        location['Latitude'] = request.GET['location[Latitude]']
-        location['Longitude'] = request.GET['location[Longitude]']'''
-        location = {'Latitude': '50.143232', 'Longitude': '22.067609599999997'}
-
-        # Other data should be also taken from request (like open_now, keyword etc)
+        # Taking data from frontend request, to call google api
+        print(request)
 
         # Getting places list json and image
         places_list = places_info.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", maxprice=4, minprice=2)

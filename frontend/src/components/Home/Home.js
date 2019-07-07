@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './Home.css';
 
-
+/* Importing animations */
 import Fade from 'react-reveal/Fade';
+
+/* Importing axois */
+import axios from 'axios';
 
 
 class Home extends React.Component {
@@ -21,7 +24,6 @@ class Home extends React.Component {
         keyword: "",
       }
     };
-    this.get_position();
 
   }
 
@@ -39,10 +41,6 @@ class Home extends React.Component {
     );
   }
 
-  CallHomeApiRequest() {
-    console.log(this.state.pos)
-  }
-
   HeaderClickEvent() {
     let value = this.state.DropDownMenuVisible;
     this.setState({
@@ -50,15 +48,50 @@ class Home extends React.Component {
     })
   }
 
-  OnChangeForm(){
-    console.log("EHLLO")
-    console.log(this.state)
+  handleSubmit(event) {
+    /* presisting event to avoid error */
+    event.persist()
+
+    let max_price = event.target[4].value;
+
+    /* Object that contains full data that will be sent to backend */
+    var data_for_api_call = {
+      form: {
+        open_now: event.target[1].value,
+        keyword: event.target[2].value,
+        min_price: event.target[3].value,
+        max_price: event.target[4].value,
+      },
+      location_coords: {
+        latitude: null,
+        longitude: null
+      }
+    }
+
+    /* getting lcoation object (I will call getCurrentPosition from this object) */
+    const location_object = window.navigator && window.navigator.geolocation;
+
+    /* Getting location coords */
+    location_object.getCurrentPosition((position) => {
+
+        /* If everything is ok, save location_coords to object */
+        data_for_api_call.location_coords.latitude = position.coords.latitude;
+        data_for_api_call.location_coords.longitude = position.coords.longitude;
+
+        /* Else show errors */
+      }, (error) => {
+        alert("GETTING LOCATION ERROR")
+      })
+
+    this.CallHomeApiRequest(data_for_api_call)
+
+    /* Preventing default to avoid errors */
+    event.preventDefault()
   }
 
-  handleSubmit(event) {
-    event.persist()
-    console.log(event.target[1].value);
-    event.preventDefault()
+  /* This function requests my backend with given data to get list of places json, and pass it to another component */
+  CallHomeApiRequest(data) {
+    console.log(data)
   }
 
   render() {
@@ -87,7 +120,7 @@ class Home extends React.Component {
               </div>
 
                   <div className="mt-5 form_fields_container">
-                    <h5 onClick={this.HeaderClickEvent.bind(this)}>
+                    <h5 onClick={this.HeaderClickEvent.bind(this)} className="search_options">
                       Search options:
                       { this.state.DropDownMenuVisible && <span className="up_arrow"> &#9650; </span> }
                       { !this.state.DropDownMenuVisible && <span className="dropdown_arrow"> &#9660; </span> }
