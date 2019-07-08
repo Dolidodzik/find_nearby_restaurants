@@ -4,9 +4,6 @@ import './Home.css';
 /* Importing animations */
 import Fade from 'react-reveal/Fade';
 
-/* Importing axois */
-import axios from 'axios';
-
 
 class Home extends React.Component {
 
@@ -52,21 +49,7 @@ class Home extends React.Component {
     /* presisting event to avoid error */
     event.persist()
 
-    let max_price = event.target[4].value;
 
-    /* Object that contains full data that will be sent to backend */
-    var data_for_api_call = {
-      form: {
-        open_now: event.target[1].value,
-        keyword: event.target[2].value,
-        min_price: event.target[3].value,
-        max_price: event.target[4].value,
-      },
-      location_coords: {
-        latitude: null,
-        longitude: null
-      }
-    }
 
     /* getting lcoation object (I will call getCurrentPosition from this object) */
     const location_object = window.navigator && window.navigator.geolocation;
@@ -75,23 +58,32 @@ class Home extends React.Component {
     location_object.getCurrentPosition((position) => {
 
         /* If everything is ok, save location_coords to object */
-        data_for_api_call.location_coords.latitude = position.coords.latitude;
-        data_for_api_call.location_coords.longitude = position.coords.longitude;
+        /* Object that contains full data that will be sent to backend */
+        var data_for_api_call = {
+          form: {
+            open_now: event.target[1].value,
+            keyword: event.target[2].value,
+            min_price: event.target[3].value,
+            max_price: event.target[4].value,
+            radius: event.target[5].value,
+          },
+          location_coords: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }
+        }
+
+        /* Sending got data to localStorage as JSON string */
+        localStorage.setItem('DataSetInHome', JSON.stringify(data_for_api_call));
+        let data_to_pass_to_backend = JSON.parse(localStorage.getItem('DataSetInHome'));
 
         /* Else show errors */
       }, (error) => {
         alert("GETTING LOCATION ERROR")
       })
 
-    this.CallHomeApiRequest(data_for_api_call)
-
     /* Preventing default to avoid errors */
     event.preventDefault()
-  }
-
-  /* This function requests my backend with given data to get list of places json, and pass it to another component */
-  CallHomeApiRequest(data) {
-    console.log(data)
   }
 
   render() {
@@ -114,7 +106,7 @@ class Home extends React.Component {
             <form className="col-12" onSubmit={this.handleSubmit.bind(this)}>
 
               <div className="button_wraper">
-                <button type="submit" className="submit_search mt-4 p-2 px-5" onClick={this.CallHomeApiRequest.bind(this)}>
+                <button type="submit" className="submit_search mt-4 p-2 px-5">
                   Search!
                 </button>
               </div>
@@ -145,6 +137,12 @@ class Home extends React.Component {
                             From:<input placeholder="From" className="col-5 mt-3 mx-2" type="number" min="1" max="5" defaultValue="1"/> <br/>
                             To: <input placeholder="To" className="col-5 mt-2 mx-2" type="number" min="1" max="5" defaultValue="5"/>
                           </label>
+
+                          <label>
+                            <div className="mt-4"> Distance from you (in meters): </div>
+                            <input defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="1" max="20000" defaultValue="1"/> <br/>
+                          </label>
+
                         </div>
                       </Fade>
 
