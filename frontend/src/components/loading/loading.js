@@ -13,6 +13,9 @@ export default class loading extends Component {
     constructor(props) {
       super(props);
 
+      /* Binding this to CallHomeApiRequest */
+      this.CallHomeApiRequest = this.CallHomeApiRequest.bind(this);
+
       /* Getting data stored in localStorage, and requesting my backend to get list of places */
       this.CallHomeApiRequest()
     }
@@ -32,6 +35,12 @@ export default class loading extends Component {
       }).then(function (response) {
         let data = response.data.data[0].json_data;
         console.log(data)
+        /* Sending got data to localStorage as JSON string */
+        localStorage.setItem('PlacesList', JSON.stringify(data));
+
+        /* Changing component to placesList */
+        this.props.history.push('/placesList')
+
       }).catch(function (error) {
         console.log(error)
       });

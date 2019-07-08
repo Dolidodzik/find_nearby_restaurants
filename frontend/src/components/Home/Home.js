@@ -63,8 +63,8 @@ class Home extends React.Component {
           form: {
             open_now: event.target[1].value,
             keyword: event.target[2].value,
-            min_price: event.target[3].value,
-            max_price: event.target[4].value,
+            minprice: event.target[3].value,
+            maxprice: event.target[4].value,
             radius: event.target[5].value,
           },
           location_coords: {
@@ -75,7 +75,9 @@ class Home extends React.Component {
 
         /* Sending got data to localStorage as JSON string */
         localStorage.setItem('DataSetInHome', JSON.stringify(data_for_api_call));
-        let data_to_pass_to_backend = JSON.parse(localStorage.getItem('DataSetInHome'));
+
+        /* Changing component to loading */
+        this.props.history.push('/loading')
 
         /* Else show errors */
       }, (error) => {
@@ -140,7 +142,7 @@ class Home extends React.Component {
 
                           <label>
                             <div className="mt-4"> Distance from you (in meters): </div>
-                            <input defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="1" max="20000" defaultValue="1"/> <br/>
+                            <input defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="1" max="20000"/> <br/>
                           </label>
 
                         </div>

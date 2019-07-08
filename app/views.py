@@ -23,12 +23,16 @@ class list_of_places(views.APIView):
         # Taking data from frontend request, to call google api
         data = json.loads(request.body.decode('utf-8'))
 
-        location = {'Latitude': '50.143232', 'Longitude': '22.067609599999997'}
-        print(data["location_coords"])
+        # changing on/off to True/False in open_now input
+        open_now = True
+        if data["form"]["open_now"] != "on":
+            open_now = None
 
         # Getting places list json
-        places_list = places_info.get_places_in_circle(location, 99999, open_now=True, keyword="pizza", maxprice=4, minprice=2)
+        places_list = places_info.get_places_in_circle(data["location_coords"], int(data["form"]["radius"]), open_now=open_now,
+        keyword=data["form"]["keyword"], maxprice=data["form"]["maxprice"], minprice=data["form"]["minprice"])
 
+        # Data to serialize
         data= [{
             "json_data": places_list["results"]
         }]
