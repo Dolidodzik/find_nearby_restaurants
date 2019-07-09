@@ -15,9 +15,6 @@ export default class loading extends Component {
 
       /* Binding this to CallHomeApiRequest */
       this.CallHomeApiRequest = this.CallHomeApiRequest.bind(this);
-
-      /* Getting data stored in localStorage, and requesting my backend to get list of places */
-      this.CallHomeApiRequest()
     }
 
     /* This function requests my backend with given data to get list of places json, and pass it to another component */
@@ -33,23 +30,27 @@ export default class loading extends Component {
           "content-type": "application/json"
         }
       }).then(function (response) {
+
         let data = response.data.data[0].json_data;
         console.log(data)
         /* Sending got data to localStorage as JSON string */
         localStorage.setItem('PlacesList', JSON.stringify(data));
 
-        /* Changing component to placesList */
-        this.props.history.push('/placesList')
 
       }).catch(function (error) {
         console.log(error)
       });
+
+      /* Changing component to placesList */
+      this.props.history.push('/placesList')
 
     }
 
     render() {
       return (
         <div className="loading_component_container">
+
+          { this.CallHomeApiRequest() }
 
           <LoadingScreen
               loading={true}
@@ -63,5 +64,4 @@ export default class loading extends Component {
         </div>
       );
     }
-
   }
