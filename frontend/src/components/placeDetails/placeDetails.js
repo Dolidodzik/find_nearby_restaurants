@@ -37,14 +37,16 @@ export default class placeDetails extends Component {
          headers: {
            "content-type": "application/json"
          }
-       }).then(function (response) {
+       }).then((response) => {
 
          /* Getting data */
          let data = response.data[0].json_data
 
          /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
          sessionStorage.setItem(item_name, JSON.stringify(data));
-         details = data;
+         this.setState({
+           data: data,
+         });
 
 
        }).catch(function (error) {
@@ -52,14 +54,11 @@ export default class placeDetails extends Component {
        });
      /* else everything is ok, prev_details are satisfying */
      }else{
-       //#pass
+       this.setState({
+         data: details,
+       });
      }
      console.log(details)
-     /* Setting state */
-     this.setState({
-       data: details,
-     });
-
     }
 
     render() {
@@ -71,12 +70,28 @@ export default class placeDetails extends Component {
 
                 <div className="spacer col-1"></div>
                   <header className="col-10 p-4 py-5">
-                    <h2> Details of NAME! </h2>
+                    <h2> Details of {this.state.data.name}! </h2>
                   </header>
                 <div className="spacer col-1"></div>
 
-                <div className="col-12"> <b>Rating:</b> {this.state.data.rating} </div>
+                <div className="col-12"> <b>Address:</b> {this.state.data.vicinity} </div>
                 <div className="col-12"> <b>Website:</b> {this.state.data.website} </div>
+                <div className="col-12"> <b>Phone:</b> {this.state.data.formatted_phone_number} </div>
+                <div className="col-12"> <b>Excat address:</b> {this.state.data.formatted_address} </div>
+
+                <div className="col-12 mt-4"> <b>Rating:</b> {this.state.data.rating} </div>
+                <div className="col-12"> <b>Number of ratings:</b> {this.state.data.user_ratings_total} </div>
+                <div className="col-12"> <b>Reviews:</b> &#9660; </div>
+                <div className="reviews col-12">
+                  review 1, 2, 3, 4
+                </div>
+
+                <header className="col-12 mt-5">
+                  <h4> Photos linked with this place: </h4>
+                </header>
+                <div className="gallery col-12">
+
+                </div>
 
             </div>
           </div>

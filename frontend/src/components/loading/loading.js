@@ -41,7 +41,7 @@ export default class loading extends Component {
         console.log(error)
       });
       let places = JSON.parse(localStorage.getItem('PlacesList'));
-      console.log(places)
+  
       /* Changing component to placesList */
       this.props.history.push('/placesList')
 

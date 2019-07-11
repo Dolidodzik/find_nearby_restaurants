@@ -6,7 +6,6 @@ export default class placesList extends Component {
     constructor(props) {
       super(props);
       this.getComponent = this.getComponent.bind(this);
-      console.log(JSON.parse(localStorage.getItem('PlacesList')));
     }
 
     getComponent(event){
