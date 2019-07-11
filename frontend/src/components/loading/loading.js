@@ -32,7 +32,7 @@ export default class loading extends Component {
       }).then(function (response) {
 
         let data = response.data.data[0].json_data;
-        console.log(data)
+        console.log(response)
         /* Sending got data to localStorage as JSON string */
         localStorage.setItem('PlacesList', JSON.stringify(data));
 
@@ -40,7 +40,8 @@ export default class loading extends Component {
       }).catch(function (error) {
         console.log(error)
       });
-
+      let places = JSON.parse(localStorage.getItem('PlacesList'));
+      console.log(places)
       /* Changing component to placesList */
       this.props.history.push('/placesList')
 
