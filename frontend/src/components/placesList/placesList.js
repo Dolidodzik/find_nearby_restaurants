@@ -5,47 +5,47 @@ import './placesList.css'
 export default class placesList extends Component {
     constructor(props) {
       super(props);
+      this.getComponent = this.getComponent.bind(this);
       console.log(JSON.parse(localStorage.getItem('PlacesList')));
     }
 
+    getComponent(event){
 
+      /* presisting event to avoid error */
+      event.persist()
 
+      /* Getting ID of clicked place */
+      let id = event.target.id;
 
-    /* This function returns html with list of places */
-    places_list(){
-      let places = JSON.parse(localStorage.getItem('PlacesList'));
+      /* Saving this ID to sessionStorage */
+      sessionStorage.setItem('SelectedPlaceID', id);
 
-      let return_value = [];
+      /* Redirecting to place details */
+      this.props.history.push('/placeDetails')
 
-      for (var i = 0; i < places.length; i++) {
-        let place = places[i];
-        return_value.push("<div> place.id </div>");
-      }
-      console.log("REUTRN VALUE: "+return_value)
-      return (return_value);
+      /* Preventing default to avoid errors */
+      event.preventDefault()
     }
 
     render() {
       let places = JSON.parse(localStorage.getItem('PlacesList'));
 
-      /* This const contains final html output that will be used in return */
-      const formated_places = places.map((place) =>
-        <li>{place.id}</li>
-      );
-
-
       function PlacesList(props) {
-        console.log(props)
+
         const content = props.places.map((place) =>
           <div key={place.id} className="mt-5">
-            <header className="">
-              <h5> {place.name} </h5>
-            </header>
+
+            <a href="#" className="place_link">
+              <header>
+                <h4 id={place.place_id} onClick={props.getComponent}> {place.name} </h4>
+              </header>
+            </a>
             <div className="info mt-3">
               Address: {place.vicinity} <br/>
               Rating: {place.rating} <br/>
               Price level: {place.price_level} <br/>
             </div>
+
           </div>
         );
 
@@ -69,7 +69,7 @@ export default class placesList extends Component {
               <div className="spacer col-1"></div>
               <main className="results col-10">
 
-                <PlacesList places={places} className=""/>
+                <PlacesList places={places} className="" getComponent={this.getComponent}/>
 
               </main>
               <div className="spacer col-1"></div>

@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home';
 import loading from './components/loading';
 import placesList from './components/placesList';
+import placeDetails from './components/placeDetails';
 
 
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/loading" component={loading} />
             <Route exact path="/placesList" component={placesList} />
+            <Route exact path="/placeDetails/" component={placeDetails} />
           </div>
         </Router>
 
