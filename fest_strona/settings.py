@@ -142,9 +142,9 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': CACHE_ROOT,
         # 1 week cache time (in seconds)
-        #'TIMEOUT': 604800,
+        'TIMEOUT': 604800,
         # Test cache for 0 seconds (effectivly no cache)
-        'TIMEOUT': 0,
+        #'TIMEOUT': 0,
     }
 }
 

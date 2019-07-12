@@ -28,7 +28,7 @@ export default class placesList extends Component {
 
     render() {
       let places = JSON.parse(localStorage.getItem('PlacesList'));
-
+      console.log(places)
       function PlacesList(props) {
 
         const content = props.places.map((place) =>

@@ -9,7 +9,8 @@ import urllib
 import app.scripts_for_api_control.settings as settings
 
 
-'''class Cached_Image(models.Model):
+class Cached_Image(models.Model):
+    # Google api reference
     reference = models.CharField(max_length=255, default=None, primary_key=True)
 
     # Saved image file got from google api
@@ -28,4 +29,4 @@ import app.scripts_for_api_control.settings as settings
         self.image_file.save("CACHED_IMAGE", File(img_temp))
 
     def __str__(self):
-        return self.reference'''
+        return self.reference

@@ -112,29 +112,22 @@ class places_info():
         for photo in photos:
             # Shorting later syntaxes
             photo_ref = photo["photo_reference"]
-            # Setting up cache key
-            cache_key = "PHOTO_IMAGE" + photo_ref
-            # Getting previous cache
-            cached_data = cache.get(cache_key)
+
+            # Getting row from db
+            cached_image_queryset = Cached_Image.objects.filter(reference=photo_ref)
 
             # Checking if previously cached data exists
-            if cached_data != None:
+            if cached_image_queryset.exists():
                 # Returning cached data
-                return cached_data
+                print("DZIALA")
+                photos_urls_list.extend([ cached_image_queryset.first().image_file.url ])
             else:
-                image = "IMAGE NONE"
+                # getting row, and then returning it
+                instance = Cached_Image(reference=photo_ref)
+                instance.save()
+                instance.save_image()
+                photos_urls_list.extend([ instance.image_file.url ])
 
-                # Getting temp image
-                URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=" + settings.KEY
-                URL += "&photoreference=" + photo_ref
-                result = urllib.request.urlretrieve(URL)
-                img_temp = NamedTemporaryFile(delete = True)
-                img_temp.write(urlopen(URL).read())
-                img_temp.flush()
-
-                # Saving new data to cache
-                cache.set(cache_key, File(img_temp), django_settings.CACHES["default"]["TIMEOUT"])
-                return img_temp
 
 
 

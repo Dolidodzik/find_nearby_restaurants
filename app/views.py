@@ -64,9 +64,8 @@ class place_details(views.APIView):
 # (if desired images haven't been chaced in SFAC.settings cache_time they will be re-requested from google api)
 class image_gallery(views.APIView):
     def get(self, request, place_id):
-        print(places_info.get_place_images_gallery(places_info, place_id))
-        photo_list = 0
-        places_info.get_place_details(place_id)
+        photo_list = places_info.get_place_images_gallery(places_info, place_id)
+    
         data= [{
             "json_data": photo_list
         }]
