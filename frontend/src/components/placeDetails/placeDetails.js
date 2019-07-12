@@ -4,13 +4,62 @@ import './placeDetails.css'
 /* Importing axois */
 import axios from 'axios';
 
+/* Importing animations */
+import Fade from 'react-reveal/Fade';
+
+
 export default class placeDetails extends Component {
 
     constructor(props) {
       super(props);
       this.state ={
         data: "initial_value",
+        ReviewsVisible: false,
       }
+    }
+
+    /* This function returns html with reviews */
+   Reviews(reviews) {
+
+      if(reviews==null){
+        /* Getting ID of requested place and setting up name that will be used in sessionStorage */
+        let place_id = sessionStorage.getItem('SelectedPlaceID');
+        let item_name = "place_details"+place_id;
+
+        /* Getting details then reviews */
+        let details = JSON.parse(sessionStorage.getItem(item_name));
+        reviews = details.reviews
+      }
+      console.log(reviews)
+      /* Getting ID of requested place and etting up name that will be used in sessionStorage */
+      const content = reviews.map((review) =>
+        <div key={review.id} className="mt-5">
+            <a href="#" className="place_link">
+              <header>
+                <h4 id={review.place_id} onClick={review.getComponent}> {review.name} </h4>
+              </header>
+            </a>
+            <div className="info mt-3 px-4">
+              <a href={review.author_url}>{review.author_name}</a> <br/>
+              <div className="mt-2"> {review.text} </div> <br/>
+              <div> <b>Rating:</b> {review.rating} </div> <br/>
+            </div>
+        </div>
+      );
+
+      return (
+        <div>
+          {content}
+        </div>
+      );
+    }
+
+    /* This function handles clicks of reviews header */
+    ReviewsClick() {
+      let value = this.state.ReviewsVisible;
+      this.setState({
+        ReviewsVisible: !value
+      })
     }
 
     /* Getting details before render */
@@ -58,7 +107,7 @@ export default class placeDetails extends Component {
          data: details,
        });
      }
-     console.log(details)
+     console.log(this.Reviews(details.reviews))
     }
 
     render() {
@@ -81,10 +130,16 @@ export default class placeDetails extends Component {
 
                 <div className="col-12 mt-4"> <b>Rating:</b> {this.state.data.rating} </div>
                 <div className="col-12"> <b>Number of ratings:</b> {this.state.data.user_ratings_total} </div>
-                <div className="col-12"> <b>Reviews:</b> &#9660; </div>
-                <div className="reviews col-12">
-                  review 1, 2, 3, 4
+                <div className="col-12" onClick={this.ReviewsClick.bind(this)}>
+                  <b>Reviews:</b>
+                  { this.state.ReviewsVisible && <span className="up_arrow"> &#9650; </span> }
+                  { !this.state.ReviewsVisible && <span className="dropdown_arrow"> &#9660; </span> }
                 </div>
+                <Fade when={this.state.ReviewsVisible}>
+                  {this.Reviews(null)}
+                </Fade>
+
+
 
                 <header className="col-12 mt-5">
                   <h4> Photos linked with this place: </h4>
