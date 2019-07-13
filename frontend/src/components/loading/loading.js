@@ -65,7 +65,17 @@ export default class loading extends Component {
         }).then((response) => {
 
           /* Getting data */
-          let data = response.data[0].json_data
+          let data = response.data[0].json_data;
+
+          /* If optionals fields are "null", replace them with human readable string */
+          console.log(data.website)
+          if(!data.website){
+            data.website = "Not provided"
+          }if(!data.formatted_phone_number){
+            data.formatted_phone_number = "Not provided"
+          }
+
+
 
           /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
           localStorage.setItem("place_details_data", JSON.stringify(data));
