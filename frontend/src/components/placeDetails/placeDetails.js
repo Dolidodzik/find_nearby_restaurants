@@ -25,13 +25,6 @@ export default class placeDetails extends Component {
       }
     }
 
-    GalleryHeaderClick(){
-      let value = this.state.GalleryShown;
-      this.setState({
-        GalleryShown: !value
-      })
-    }
-
     /* This function handles clicks of reviews header */
     ReviewsHeaderClick() {
       let value = this.state.ReviewsVisible;
@@ -40,10 +33,49 @@ export default class placeDetails extends Component {
       })
     }
 
+    GalleryHeaderClick(){
+      let value = this.state.GalleryShown;
+      this.setState({
+        GalleryShown: !value
+      })
+      this.GetGalleryLinks();
+    }
+
+    GetGalleryLinks(){
+
+      /* Getting ID of requested place */
+      let place_id = localStorage.getItem('SelectedPlaceID');
+
+      /* Setting up URL */
+      let url = "http://localhost:8000/api/image_gallery/"+place_id;
+
+      /* Requesting my backend to get images links list */
+      /* Requesting my backend */
+      axios({
+        method: 'get',
+        url: url,
+        headers: {
+          "content-type": "application/json"
+        }
+      }).then((response) => {
+
+        /* Getting data */
+        let data = response.data[0].json_data;
+        console.log(data)
+        /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
+        localStorage.setItem("place_gallery_data", JSON.stringify(data));
+
+      }).catch(function (error) {
+        console.log(error)
+      });
+      this.forceUpdate()
+    }
+
     render() {
 
       /* Setting data */
       let data = JSON.parse(localStorage.getItem("place_details_data"));
+      let links = JSON.parse(localStorage.getItem("place_gallery_data"));
 
       /* This function returns html with reviews */
       function Reviews(props) {
@@ -72,9 +104,9 @@ export default class placeDetails extends Component {
       /* This function returns html with gallery */
       function Gallery(props) {
         console.log(props)
-        const content = props.reviews.map((review) =>
-          <div key={review.id} className="">
-
+        const content = props.links.map((image) =>
+          <div key={image.id} className="">
+            <h1>JD</h1>
           </div>
         );
 
@@ -108,17 +140,7 @@ export default class placeDetails extends Component {
                 <div className="col-12 mb-5"> <b>Excat address:</b> {data.formatted_address} </div>
 
 
-                <header className="col-12 mt-5 px-5 mb-5" onClick={this.GalleryHeaderClick.bind(this)}>
-                  <span className="gallery_header"> Photos linked with this place: </span>
-                  { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
-                  { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
-                </header>
-                <Fade when={this.state.GalleryShown}>
-                  stopy
-                </Fade>
-
-
-                <div className="col-12 mt-4"> <b>Rating:</b> {data.rating} </div>
+                <div className="col-12"> <b>Rating:</b> {data.rating} </div>
                 <div className="col-12"> <b>Number of ratings:</b> {data.user_ratings_total} </div>
                 <div className="col-12" onClick={this.ReviewsHeaderClick.bind(this)}>
                   <b>Reviews:</b>
@@ -126,8 +148,22 @@ export default class placeDetails extends Component {
                   { !this.state.ReviewsVisible && <span className="dropdown_arrow"> &#9660; </span> }
                 </div>
                 <Fade when={this.state.ReviewsVisible}>
-                  <Reviews reviews={data.reviews} className="" getComponent={this.getComponent}/>
+                  { this.state.ReviewsVisible &&
+                    <Reviews reviews={data.reviews} className="" getComponent={this.getComponent}/>
+                  }
                 </Fade>
+
+                <header className="col-12 mt-5 px-5" onClick={this.GalleryHeaderClick.bind(this)}>
+                  <span className="gallery_header"> Photos linked with this place: </span>
+                  { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
+                  { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
+                </header>
+                <Fade when={this.state.GalleryShown}>
+                  <Gallery links={links} className="" getComponent={this.getComponent}/>
+                </Fade>
+
+
+
 
 
 

@@ -22,7 +22,7 @@ import urllib
 # If JSON is true, JSON data will be returned instead of JSON converted to dict
 def get_data_from_URL(URL, JSON=False):
 
-    #print("requesting URL", URL)
+    print("requesting URL", URL)
     # Full, pure, response
     response = requests.get(URL)
 
