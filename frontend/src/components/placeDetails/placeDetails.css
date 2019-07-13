@@ -6,3 +6,18 @@
 b{
   font-size: 21px;
 }
+
+.place_name{
+  text-decoration: underline;
+}
+
+.gallery_header{
+  font-size: 21px;
+  font-weight: 600;
+}
+
+a{
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 23px;
+}

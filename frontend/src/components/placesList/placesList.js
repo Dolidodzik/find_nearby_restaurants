@@ -17,10 +17,13 @@ export default class placesList extends Component {
       let id = event.target.id;
 
       /* Saving this ID to sessionStorage */
-      sessionStorage.setItem('SelectedPlaceID', id);
+      localStorage.setItem('SelectedPlaceID', id);
+
+      /* Let know loading component, what data it should load */
+      localStorage.setItem('WhatToLoad', "PLACE_DETAILS");
 
       /* Redirecting to place details */
-      this.props.history.push('/placeDetails')
+      this.props.history.push('/loading')
 
       /* Preventing default to avoid errors */
       event.preventDefault()
@@ -64,6 +67,8 @@ export default class placesList extends Component {
               <header className="col-12 px-5 mt-5 mb-2">
                 <h2> Here are results: </h2>
               </header>
+
+              <a href={"/"} className="col-12 my-4"> Back to home! </a>
 
               <div className="spacer col-1"></div>
               <main className="results col-10">

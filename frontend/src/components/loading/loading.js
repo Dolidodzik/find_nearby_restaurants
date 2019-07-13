@@ -19,31 +19,66 @@ export default class loading extends Component {
 
     /* This function requests my backend with given data to get list of places json, and pass it to another component */
     CallHomeApiRequest(data) {
-      let data_to_pass_to_backend = JSON.parse(localStorage.getItem('DataSetInHome'));
-      let url = "http://127.0.0.1:8000/api/home"
-      console.log(data_to_pass_to_backend)
-      axios({
-        method: 'post',
-        url: url,
-        data: data_to_pass_to_backend,
-        headers: {
-          "content-type": "application/json"
-        }
-      }).then(function (response) {
+      let what_to_load = localStorage.getItem('WhatToLoad');
+      if(what_to_load == "PLACES_LIST" ){
 
-        let data = response.data.data[0].json_data;
-        console.log(response)
-        /* Sending got data to localStorage as JSON string */
-        localStorage.setItem('PlacesList', JSON.stringify(data));
+        console.log("PLACES LIST")
+        let data_to_pass_to_backend = JSON.parse(localStorage.getItem('DataSetInHome'));
+        console.log(data_to_pass_to_backend)
+        let url = "http://127.0.0.1:8000/api/home"
+        axios({
+          method: 'post',
+          url: url,
+          data: data_to_pass_to_backend,
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(function (response) {
 
+          let data = response.data.data[0].json_data;
+          console.log(response)
+          /* Sending got data to localStorage as JSON string */
+          localStorage.setItem('PlacesList', JSON.stringify(data));
+          console.log(JSON.parse(localStorage.getItem('PlacesList')))
+        }).catch(function (error) {
+          console.log(error)
+        });
 
-      }).catch(function (error) {
-        console.log(error)
-      });
-      let places = JSON.parse(localStorage.getItem('PlacesList'));
-  
       /* Changing component to placesList */
       this.props.history.push('/placesList')
+
+      }else if(what_to_load == "PLACE_DETAILS"){
+        console.log("HELLO")
+        /* Getting ID of requested place */
+        let place_id = localStorage.getItem('SelectedPlaceID');
+
+        /* Setting up URL */
+        let url = "http://localhost:8000/api/details/"+place_id;
+
+        /* Requesting my backend */
+        axios({
+          method: 'get',
+          url: url,
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then((response) => {
+
+          /* Getting data */
+          let data = response.data[0].json_data
+
+          /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
+          localStorage.setItem("place_details_data", JSON.stringify(data));
+
+          /* Redirecting to place details */
+          this.props.history.push('/placeDetails')
+
+        }).catch(function (error) {
+          console.log(error)
+        });
+      /* else everything is ok, prev_details are satisfying */
+      }
+
 
     }
 

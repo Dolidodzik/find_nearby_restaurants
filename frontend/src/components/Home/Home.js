@@ -76,6 +76,9 @@ class Home extends React.Component {
         /* Sending got data to localStorage as JSON string */
         localStorage.setItem('DataSetInHome', JSON.stringify(data_for_api_call));
 
+        /* Let know loading component, what data it should load */
+        localStorage.setItem('WhatToLoad', "PLACES_LIST");
+
         /* Changing component to loading */
         this.props.history.push('/loading')
 
@@ -142,7 +145,7 @@ class Home extends React.Component {
 
                           <label>
                             <div className="mt-4"> Distance from you (in meters): </div>
-                            <input defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="1" max="20000"/> <br/>
+                            <input step="100" defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="0" max="20000" /> <br/>
                           </label>
 
                         </div>
