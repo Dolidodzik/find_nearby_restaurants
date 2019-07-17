@@ -145,8 +145,9 @@ class Home extends React.Component {
 
                           <label>
                             <div className="mt-4"> Distance from you (in meters): </div>
-                            <input step="100" defaultValue="3000" className="col-8 mt-3 mx-2" type="number" min="0" max="20000" /> <br/>
+                            <input step="100" defaultValue="3000" className="col-8 mb-5 mt-3 mx-2" type="number" min="0" max="20000" /> <br/>
                           </label>
+                          <div className="mb-5"></div>
 
                         </div>
                       </Fade>

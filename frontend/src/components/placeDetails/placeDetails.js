@@ -7,6 +7,9 @@ import axios from 'axios';
 /* Importing animations */
 import Fade from 'react-reveal/Fade';
 
+/* Imporintg lightbox */
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 
 export default class placeDetails extends Component {
@@ -61,9 +64,29 @@ export default class placeDetails extends Component {
 
         /* Getting data */
         let data = response.data[0].json_data;
-        console.log(data)
+
+        let final_data = [];
+
+        for (var i = 0; i < data.length; i++) {
+            //console.log(data[i]);
+            /* Every photo will be represented by one object with various propeties  */
+            let object = new Object();
+
+            /* Setting propeties under names that are compatible with "react-grid-gallery" library  */
+            object.src = data[i].img_url;
+            object.thumbnailWidth = data[i].width;
+            object.thumbnailHeight = data[i].height;
+            object.thumbnail = data[i].img_url;
+
+            /* Setting up id/number of image */
+            object.image_number = i;
+
+            /* pushing set data */
+            final_data.push(object);
+        }
+        console.log(final_data)
         /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
-        localStorage.setItem("place_gallery_data", JSON.stringify(data));
+        localStorage.setItem("place_gallery_data", JSON.stringify(final_data));
 
       }).catch(function (error) {
         console.log(error)
@@ -75,7 +98,8 @@ export default class placeDetails extends Component {
 
       /* Setting data */
       let data = JSON.parse(localStorage.getItem("place_details_data"));
-      let links = JSON.parse(localStorage.getItem("place_gallery_data"));
+      let images = JSON.parse(localStorage.getItem("place_gallery_data"));
+      console.log(images);
 
       /* This function returns html with reviews */
       function Reviews(props) {
@@ -101,12 +125,11 @@ export default class placeDetails extends Component {
         );
       }
 
-      /* This function returns html with gallery */
+
       function Gallery(props) {
-        console.log(props)
-        const content = props.links.map((image) =>
-          <div key={image.id} className="">
-            <h1>JD</h1>
+        const content = props.images.map((image) =>
+          <div key={image.id} className="mt-5">
+            KUTAS: {image.image_number}
           </div>
         );
 
@@ -117,11 +140,12 @@ export default class placeDetails extends Component {
         );
       }
 
+
       return (
         <div className="place_details_component">
           <div className="containter">
             <div className="row">
-
+                <Gallery images={images} className=""/>
                 <div className="spacer col-1"></div>
                   <header className="col-10 p-3 py-5">
                     <h2> Details of
@@ -159,13 +183,8 @@ export default class placeDetails extends Component {
                   { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                 </header>
                 <Fade when={this.state.GalleryShown}>
-                  <Gallery links={links} className="" getComponent={this.getComponent}/>
+
                 </Fade>
-
-
-
-
-
 
             </div>
           </div>

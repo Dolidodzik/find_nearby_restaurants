@@ -1,6 +1,7 @@
 .place_details_component{
     overflow-wrap: break-word;
     font-size: 20px;
+    text-align: center;
 }
 
 b{

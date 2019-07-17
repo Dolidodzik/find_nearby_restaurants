@@ -110,8 +110,16 @@ class places_info():
 
         # Looping over photos
         for photo in photos:
+            # setting up list that represents one photo and will be pushed to photos_urls_list
+            this_image_data = {"width": None, "height": None, "img_url": None}
+
             # Shorting later syntaxes
             photo_ref = photo["photo_reference"]
+
+            # Setting size data in dict
+            this_image_data["height"] = photo["height"]
+            this_image_data["width"] = photo["width"]
+
 
             # Getting row from db
             cached_image_queryset = Cached_Image.objects.filter(reference=photo_ref)
@@ -119,14 +127,14 @@ class places_info():
             # Checking if previously cached data exists
             if cached_image_queryset.exists():
                 # Returning cached data
-                print("DZIALA")
-                photos_urls_list.extend([ cached_image_queryset.first().image_file.url ])
+                this_image_data["img_url"] = cached_image_queryset.first().image_file.url
             else:
                 # getting row, and then returning it
                 instance = Cached_Image(reference=photo_ref)
                 instance.save()
                 instance.save_image()
-                photos_urls_list.extend([ instance.image_file.url ])
+                this_image_data["img_url"] = instance.image_file.url
+            photos_urls_list.extend([ this_image_data ])
 
 
 
