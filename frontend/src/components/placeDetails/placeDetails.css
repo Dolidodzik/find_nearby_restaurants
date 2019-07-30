@@ -22,3 +22,8 @@ a{
   font-weight: 600;
   font-size: 23px;
 }
+
+.gallery{
+  padding: 550px !important;
+  display: none;
+}

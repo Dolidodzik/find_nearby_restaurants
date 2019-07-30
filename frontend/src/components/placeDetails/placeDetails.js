@@ -46,6 +46,8 @@ export default class placeDetails extends Component {
 
     GetGalleryLinks(){
 
+      console.log("GET GALLERY :LINKS")
+
       /* Getting ID of requested place */
       let place_id = localStorage.getItem('SelectedPlaceID');
 
@@ -73,7 +75,7 @@ export default class placeDetails extends Component {
             let object = new Object();
 
             /* Setting propeties under names that are compatible with "react-grid-gallery" library  */
-            object.src = data[i].img_url;
+            object.src = data[i].img_url.substring(17);
             object.thumbnailWidth = data[i].width;
             object.thumbnailHeight = data[i].height;
             object.thumbnail = data[i].img_url;
@@ -87,6 +89,8 @@ export default class placeDetails extends Component {
         console.log(final_data)
         /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
         localStorage.setItem("place_gallery_data", JSON.stringify(final_data));
+        let images = JSON.parse(localStorage.getItem("place_gallery_data"));
+        console.log(images)
 
       }).catch(function (error) {
         console.log(error)
@@ -103,20 +107,21 @@ export default class placeDetails extends Component {
 
       /* This function returns html with reviews */
       function Reviews(props) {
-        const content = props.reviews.map((review) =>
-          <div key={review.id} className="mt-5">
 
-              <header>
-                <h4 id={review.place_id} onClick={review.getComponent}> {review.name} </h4>
-              </header>
-              <div className="info mt-3 px-4">
-                <a href={review.author_url} target="_blank"> {review.author_name} </a> <br/>
-                <div className="mt-2"> {review.text} </div> <br/>
-                <div> <b>Rating:</b> {review.rating} </div> <br/>
-              </div>
+          const content = props.reviews.map((review) =>
+            <div key={review.id} className="mt-5">
 
-          </div>
-        );
+                <header>
+                  <h4 id={review.place_id} onClick={review.getComponent}> {review.name} </h4>
+                </header>
+                <div className="info mt-3 px-4">
+                  <a href={review.author_url} target="_blank"> {review.author_name} </a> <br/>
+                  <div className="mt-2"> {review.text} </div> <br/>
+                  <div> <b>Rating:</b> {review.rating} </div> <br/>
+                </div>
+
+            </div>
+          );
 
         return (
           <div>
@@ -127,14 +132,22 @@ export default class placeDetails extends Component {
 
 
       function Gallery(props) {
-        const content = props.images.map((image) =>
-          <div key={image.id} className="mt-5">
-            KUTAS: {image.image_number}
-          </div>
-        );
+
+        let content = "images not found"
+
+        if(props.images != null){
+          content = props.images.map((image) =>
+            <div key={image.image_number} className="mt-5">
+              NOTHING: {image.image_number}
+              KUTAS:{image.src}: KUTAS
+
+              <img src={image.src} />
+            </div>
+          );
+        }
 
         return (
-          <div>
+          <div className="col-12">
             {content}
           </div>
         );
@@ -145,7 +158,7 @@ export default class placeDetails extends Component {
         <div className="place_details_component">
           <div className="containter">
             <div className="row">
-                <Gallery images={images} className=""/>
+
                 <div className="spacer col-1"></div>
                   <header className="col-10 p-3 py-5">
                     <h2> Details of
@@ -182,8 +195,8 @@ export default class placeDetails extends Component {
                   { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
                   { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                 </header>
-                <Fade when={this.state.GalleryShown}>
-
+                <Fade when={this.state.GalleryShown} className="col-12">
+                  <Gallery images={images} className="gallery col-12"/>
                 </Fade>
 
             </div>
