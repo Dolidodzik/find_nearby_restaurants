@@ -12,6 +12,9 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 
 
+import Gallery from 'react-grid-gallery';
+
+
 export default class placeDetails extends Component {
 
     getInitialState(){
@@ -118,6 +121,33 @@ export default class placeDetails extends Component {
       let images = JSON.parse(localStorage.getItem("place_gallery_data"));
       console.log(images);
 
+
+      const IMAGES =
+      [{
+              src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
+              thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
+              thumbnailWidth: 320,
+              thumbnailHeight: 174,
+              isSelected: true,
+              caption: "After Rain (Jeshu John - designerspics.com)"
+      },
+      {
+              src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
+              thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
+              thumbnailWidth: 320,
+              thumbnailHeight: 212,
+              tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+              caption: "Boats (Jeshu John - designerspics.com)"
+      },
+
+      {
+              src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
+              thumbnail: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
+              thumbnailWidth: 320,
+              thumbnailHeight: 212
+      }]
+
+
       /* This function returns html with reviews */
       function Reviews(props) {
 
@@ -142,27 +172,6 @@ export default class placeDetails extends Component {
           </div>
         );
       }
-
-
-      function Gallery(props) {
-
-        let content = "images not found"
-
-        if(props.images != null){
-          content = props.images.map((image) =>
-            <div key={image.image_number} className="">
-              <img src={image.src} className="col-6 img-fluid miniature" />
-            </div>
-          );
-        }
-
-        return (
-          <div className="col-12">
-            {content}
-          </div>
-        );
-      }
-
 
       return (
         <div className="place_details_component">
@@ -206,10 +215,9 @@ export default class placeDetails extends Component {
                   { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                 </header>
 
+
                 <div className="col-12">
-                  <Fade when={this.state.GalleryShown} className="">
-                    <Gallery images={images} className="gallery"/>
-                  </Fade>
+                  <Gallery images={IMAGES}/>
                 </div>
 
             </div>
