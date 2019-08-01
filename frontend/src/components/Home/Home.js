@@ -49,8 +49,6 @@ class Home extends React.Component {
     /* presisting event to avoid error */
     event.persist()
 
-
-
     /* getting lcoation object (I will call getCurrentPosition from this object) */
     const location_object = window.navigator && window.navigator.geolocation;
 
@@ -73,14 +71,14 @@ class Home extends React.Component {
           }
         }
 
-        /* Sending got data to localStorage as JSON string */
-        localStorage.setItem('DataSetInHome', JSON.stringify(data_for_api_call));
-
-        /* Let know loading component, what data it should load */
-        localStorage.setItem('WhatToLoad', "PLACES_LIST");
-
-        /* Changing component to loading */
-        this.props.history.push('/loading')
+        /* Changing view and sending data */
+        this.props.history.push({
+          pathname: '/loading',
+          state: {
+            WhatToLoad: "PLACES_LIST",
+            FormDataFromHome: data_for_api_call,
+          }
+        })
 
         /* Else show errors */
       }, (error) => {

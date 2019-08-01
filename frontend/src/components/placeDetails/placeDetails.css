@@ -27,3 +27,8 @@ a{
   padding: 550px !important;
   display: none;
 }
+
+.miniature{
+  float: left !important;
+  padding: 0;
+}

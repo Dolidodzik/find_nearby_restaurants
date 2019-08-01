@@ -19,11 +19,13 @@ export default class loading extends Component {
 
     /* This function requests my backend with given data to get list of places json, and pass it to another component */
     CallHomeApiRequest(data) {
-      let what_to_load = localStorage.getItem('WhatToLoad');
+
+      let what_to_load = this.props.location.state.WhatToLoad;
+
       if(what_to_load == "PLACES_LIST" ){
 
         console.log("PLACES LIST")
-        let data_to_pass_to_backend = JSON.parse(localStorage.getItem('DataSetInHome'));
+        let data_to_pass_to_backend = this.props.location.state.FormDataFromHome;
         console.log(data_to_pass_to_backend)
         let url = "http://127.0.0.1:8000/api/home"
         axios({
@@ -33,24 +35,27 @@ export default class loading extends Component {
           headers: {
             "content-type": "application/json"
           }
-        }).then(function (response) {
+        }).then(response => {
 
           let data = response.data.data[0].json_data;
-          console.log(response)
-          /* Sending got data to localStorage as JSON string */
-          localStorage.setItem('PlacesList', JSON.stringify(data));
-          console.log(JSON.parse(localStorage.getItem('PlacesList')))
+
+          /* Changing view and sending data */
+          this.props.history.push({
+            pathname: '/placesList',
+            state: {
+              WhatToLoad: null,
+              PlacesListData: data,
+            }
+          })
+
         }).catch(function (error) {
           console.log(error)
         });
 
-      /* Changing component to placesList */
-      this.props.history.push('/placesList')
-
       }else if(what_to_load == "PLACE_DETAILS"){
         console.log("HELLO")
         /* Getting ID of requested place */
-        let place_id = localStorage.getItem('SelectedPlaceID');
+        let place_id = this.props.location.state.SelectedPlaceID;
 
         /* Setting up URL */
         let url = "http://localhost:8000/api/details/"+place_id;
@@ -65,23 +70,28 @@ export default class loading extends Component {
         }).then((response) => {
 
           /* Getting data */
-          let data = response.data[0].json_data;
+          let data = response.data[0].json_data.result;
 
           /* If optionals fields are "null", replace them with human readable string */
-          console.log(data.website)
           if(!data.website){
             data.website = "Not provided"
           }if(!data.formatted_phone_number){
             data.formatted_phone_number = "Not provided"
           }
 
+          /* Changing view and sending data */
+          this.props.history.push({
+            pathname: '/placeDetails',
+            state: {
+              /* This data will be used in placeDetails view */
+              WhatToLoad: null,
+              PlaceDetailsData: data,
+              PlaceId: place_id,
 
-
-          /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
-          localStorage.setItem("place_details_data", JSON.stringify(data));
-
-          /* Redirecting to place details */
-          this.props.history.push('/placeDetails')
+              /* This data will be used in case if user want to back to places list */
+              PlacesListData: this.props.location.state.PlacesListData,
+            }
+          })
 
         }).catch(function (error) {
           console.log(error)

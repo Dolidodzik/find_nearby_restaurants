@@ -52,7 +52,7 @@ class place_details(views.APIView):
         details = places_info.get_place_details(place_id)
 
         data= [{
-            "json_data": details["result"]
+            "json_data": details
         }]
 
         results = places_list_serializer(data, many=True).data
@@ -65,7 +65,7 @@ class place_details(views.APIView):
 class image_gallery(views.APIView):
     def get(self, request, place_id):
         photo_list = places_info.get_place_images_gallery(places_info, place_id)
-    
+
         data= [{
             "json_data": photo_list
         }]

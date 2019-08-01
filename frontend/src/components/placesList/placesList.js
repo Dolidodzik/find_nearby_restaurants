@@ -16,22 +16,26 @@ export default class placesList extends Component {
       /* Getting ID of clicked place */
       let id = event.target.id;
 
-      /* Saving this ID to sessionStorage */
-      localStorage.setItem('SelectedPlaceID', id);
+      /* Changing view and sending data */
+      this.props.history.push({
+        pathname: '/loading',
+        state: {
+          SelectedPlaceID: id,
+          WhatToLoad: "PLACE_DETAILS",
 
-      /* Let know loading component, what data it should load */
-      localStorage.setItem('WhatToLoad', "PLACE_DETAILS");
-
-      /* Redirecting to place details */
-      this.props.history.push('/loading')
+          /* This data will be re-send to loading, because i want to provide user "back to places list" feature */
+          PlacesListData: this.props.location.state.PlacesListData,
+        }
+      })
 
       /* Preventing default to avoid errors */
       event.preventDefault()
     }
 
     render() {
-      let places = JSON.parse(localStorage.getItem('PlacesList'));
-      console.log(places)
+
+      let places = this.props.location.state.PlacesListData;
+
       function PlacesList(props) {
 
         const content = props.places.map((place) =>

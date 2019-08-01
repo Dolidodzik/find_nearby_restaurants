@@ -49,7 +49,7 @@ export default class placeDetails extends Component {
       console.log("GET GALLERY :LINKS")
 
       /* Getting ID of requested place */
-      let place_id = localStorage.getItem('SelectedPlaceID');
+      let place_id = this.props.location.state.PlaceId;
 
       /* Setting up URL */
       let url = "http://localhost:8000/api/image_gallery/"+place_id;
@@ -98,10 +98,23 @@ export default class placeDetails extends Component {
       this.forceUpdate()
     }
 
+    BackToPlacesList(){
+      /* Changing view and sending data */
+      console.log(this.props.location.state.PlacesListData)
+      this.props.history.push({
+        pathname: '/placesList',
+        state: {
+          WhatToLoad: null,
+          PlacesListData: this.props.location.state.PlacesListData,
+        }
+      })
+    }
+
     render() {
 
       /* Setting data */
-      let data = JSON.parse(localStorage.getItem("place_details_data"));
+      let data = this.props.location.state.PlaceDetailsData;
+      console.log(data)
       let images = JSON.parse(localStorage.getItem("place_gallery_data"));
       console.log(images);
 
@@ -137,11 +150,8 @@ export default class placeDetails extends Component {
 
         if(props.images != null){
           content = props.images.map((image) =>
-            <div key={image.image_number} className="mt-5">
-              NOTHING: {image.image_number}
-              KUTAS:{image.src}: KUTAS
-
-              <img src={image.src} />
+            <div key={image.image_number} className="">
+              <img src={image.src} className="col-6 img-fluid miniature" />
             </div>
           );
         }
@@ -167,7 +177,7 @@ export default class placeDetails extends Component {
                   </header>
                 <div className="spacer col-1"></div>
 
-                <a href={"/placesList"} className="col-12 mt-3"> Back to places list! </a>
+                <a onClick={this.BackToPlacesList.bind(this)} className="col-12 mt-3" href=""> Back to places list! </a>
                 <a href={"/"} className="col-12 mb-4"> Back to home! </a>
 
 
@@ -195,9 +205,12 @@ export default class placeDetails extends Component {
                   { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
                   { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                 </header>
-                <Fade when={this.state.GalleryShown} className="col-12">
-                  <Gallery images={images} className="gallery col-12"/>
-                </Fade>
+
+                <div className="col-12">
+                  <Fade when={this.state.GalleryShown} className="">
+                    <Gallery images={images} className="gallery"/>
+                  </Fade>
+                </div>
 
             </div>
           </div>
