@@ -28,6 +28,8 @@ export default class placeDetails extends Component {
         data: "initial_value",
         ReviewsVisible: false,
         GalleryShown: false,
+
+        images: null,
       }
     }
 
@@ -39,12 +41,11 @@ export default class placeDetails extends Component {
       })
     }
 
-    GalleryHeaderClick(){
-      let value = this.state.GalleryShown;
-      this.setState({
-        GalleryShown: !value
-      })
+     GalleryHeaderClick(){
+
+      /* Getting gallery images links */
       this.GetGalleryLinks();
+
     }
 
     GetGalleryLinks(){
@@ -59,6 +60,7 @@ export default class placeDetails extends Component {
 
       /* Requesting my backend to get images links list */
       /* Requesting my backend */
+      console.log("TEST")
       axios({
         method: 'get',
         url: url,
@@ -81,7 +83,7 @@ export default class placeDetails extends Component {
             object.src = data[i].img_url.substring(17);
             object.thumbnailWidth = data[i].width;
             object.thumbnailHeight = data[i].height;
-            object.thumbnail = data[i].img_url;
+            object.thumbnail = object.src;
 
             /* Setting up id/number of image */
             object.image_number = i;
@@ -90,15 +92,17 @@ export default class placeDetails extends Component {
             final_data.push(object);
         }
         console.log(final_data)
-        /* Sending got data to sessionStorage as JSON string, and setting details to correct one */
-        localStorage.setItem("place_gallery_data", JSON.stringify(final_data));
-        let images = JSON.parse(localStorage.getItem("place_gallery_data"));
-        console.log(images)
+
+        console.log("SET STEJT")
+        /* passing images data to state, and re-rendering after state change (look here to read more https://stackoverflow.com/questions/30782948/why-calling-react-setstate-method-doesnt-mutate-the-state-immediately)  */
+        this.updateState(final_data);
+
+        console.log("END SET STEJT END")
 
       }).catch(function (error) {
         console.log(error)
       });
-      this.forceUpdate()
+
     }
 
     BackToPlacesList(){
@@ -113,40 +117,33 @@ export default class placeDetails extends Component {
       })
     }
 
+    updateState = (images) => {
+     console.log('changing state');
+      this.setState({
+        images: images
+      },() => {
+        console.log('new state', this.state);
+
+        /* showing gallery */
+        this.setState({
+          GalleryShown: true,
+        })
+
+      })
+    }
+
+
     render() {
 
       /* Setting data */
       let data = this.props.location.state.PlaceDetailsData;
       console.log(data)
-      let images = JSON.parse(localStorage.getItem("place_gallery_data"));
-      console.log(images);
 
+      let images = null;
 
-      const IMAGES =
-      [{
-              src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-              thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
-              thumbnailWidth: 320,
-              thumbnailHeight: 174,
-              isSelected: true,
-              caption: "After Rain (Jeshu John - designerspics.com)"
-      },
-      {
-              src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-              thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
-              thumbnailWidth: 320,
-              thumbnailHeight: 212,
-              tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-              caption: "Boats (Jeshu John - designerspics.com)"
-      },
-
-      {
-              src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-              thumbnail: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-              thumbnailWidth: 320,
-              thumbnailHeight: 212
-      }]
-
+      if(this.state.GalleryShown){
+        images = this.state.images;
+      }
 
       /* This function returns html with reviews */
       function Reviews(props) {
@@ -209,16 +206,21 @@ export default class placeDetails extends Component {
                   }
                 </Fade>
 
-                <header className="col-12 mt-5 px-5" onClick={this.GalleryHeaderClick.bind(this)}>
+                <header className="col-12 p-5" onClick={this.GalleryHeaderClick.bind(this)}>
                   <span className="gallery_header"> Photos linked with this place: </span>
                   { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
                   { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                 </header>
 
 
-                <div className="col-12">
-                  <Gallery images={IMAGES}/>
-                </div>
+                <Fade left when={this.state.GalleryShown} className="px-5">
+                  { this.state.GalleryShown &&
+                    <div className="col-12" when={false}>
+                      <Gallery images={this.state.images} />
+                    </div>
+                  }
+                </Fade>
+
 
             </div>
           </div>

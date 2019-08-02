@@ -25,14 +25,22 @@ class App extends React.Component {
     return (
       <div className="App">
 
-        <Router>
-          <div className="app_container">
-            <Route exact path="/" component={Home} />
-            <Route exact path="/loading" component={loading} />
-            <Route exact path="/placesList" component={placesList} />
-            <Route exact path="/placeDetails/" component={placeDetails} />
+        <h1 className="header"> Thats how would this webpage look on mobile phone: </h1>
+
+        <div className="first-wrapper">
+          <div className="second-wrapper">
+
+            <Router>
+              <div className="app_container">
+                <Route exact path="/" component={Home} />
+                <Route exact path="/loading" component={loading} />
+                <Route exact path="/placesList" component={placesList} />
+                <Route exact path="/placeDetails/" component={placeDetails} />
+              </div>
+            </Router>
+
           </div>
-        </Router>
+        </div>
 
       </div>
     );
