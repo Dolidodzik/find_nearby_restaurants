@@ -6,26 +6,29 @@
   text-align: center !important;
 }
 
-.header{
-  margin-top: 50px;
-}
-
-.first-wrapper{
-  position: absolute;
-  left: 50%;
-  top: 18%;
-}
-
-.second-wrapper{
-  position: relative;
-  left: -50%;
-  border: dotted red 1px;
-}
-
 /* For small devices display page normal */
 @media (max-width: 768px) {
-  .first-wrapper{
+  .header{
+    display: none;
+  }
+}
 
+
+@media (min-width: 768px) {
+  .header{
+    margin-top: 50px;
+  }
+
+  .first-wrapper{
+    position: absolute;
+    left: 50%;
+    top: 18%;
+  }
+
+  .second-wrapper{
+    position: relative;
+    left: -50%;
+    border: dotted red 1px;
   }
 }
 

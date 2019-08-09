@@ -82,6 +82,8 @@ export default class placesList extends Component {
               </main>
               <div className="spacer col-1"></div>
 
+              <div className="spacer padding-bottom"></div>
+
             </div>
           </div>
 
