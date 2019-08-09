@@ -1,6 +1,9 @@
 # Find nerby restaurants 
 ### A mobile web application that searches for nearby restaurants
 
-A [I'm an inline-style link](https://developers.google.com/places/web-service/intro) mobile application wherein you can search for nearby restaurants. You can use multiple filters, to make sure searching results will satisfy your needs. 
+Mobile web application wherein you can search for nearby restaurants, thanks to [Google Places APi](https://developers.google.com/places/web-service/intro). 
+There are a lot of things that improve user's experience: starting from user-friendly, intuitive interface, going through complex filters that makes results much more precise, ending up with cache system that improves performance (decreases loading times and server occupancy).
 
-####Below, you can read more about details
+
+#### Below, you can read more about details
+
