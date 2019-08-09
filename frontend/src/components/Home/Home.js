@@ -98,7 +98,7 @@ class Home extends React.Component {
           <div className="row">
 
             <header className="welcome col-12 p-5">
-              <h2> Welcome to the <br/>[[app name]] </h2>
+              <h2> Welcome to the <br/> foodie </h2>
             </header>
             <div className="spacer col-1"></div>
               <header className="tip_sentance col-10 p-3">
