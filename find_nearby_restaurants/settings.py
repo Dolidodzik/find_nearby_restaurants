@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'fest_strona.urls'
+ROOT_URLCONF = 'find_nearby_restaurants.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'fest_strona.wsgi.application'
+WSGI_APPLICATION = 'find_nearby_restaurants.wsgi.application'
 
 
 # Database
