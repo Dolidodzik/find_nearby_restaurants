@@ -10,9 +10,20 @@ There are a lot of things that improve user's experience: starting from user-fri
    
 #### Home page:
 
-When user opens app it displayes home page, there user can search for nearby restaurants with default filters, or cutozmize options by clicking "Search options", and then search. It looks like this:
+When user opens app it displays home page, there user can search for nearby restaurants with default filters, or cutozmize options by clicking "Search options", and then search. It looks like this:
 
-<img align="center" width="170" height="300" src="https://i.imgur.com/JqQEpiY.png">  <img align="center" width="170" height="300" src="https://i.imgur.com/riMtnB8.png">  <img align="center" width="170" height="300" src="https://i.imgur.com/Yq2h667.png">
+<img align="center" width="170" height="300" src="https://i.imgur.com/JqQEpiY.png">  <img align="center" width="170" height="300" src="https://i.imgur.com/riMtnB8.png">  <img align="center" width="170" height="300" src="https://i.imgur.com/Yq2h667.png">  
+  
+#### Loading screens:
+
+When user submited form, he sees loading animation while application requests server for data.
+
+LOADING SCREEN PHOTOS
+
+
+#### Places list
+
+After application loaded necessary data, it displays user list of places that match to his filters.
 
 
 
