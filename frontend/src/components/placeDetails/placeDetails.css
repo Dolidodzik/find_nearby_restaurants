@@ -25,7 +25,8 @@ a{
 }
 
 .gallery{
-  padding: 550px !important;
+  padding: 10px !important;
+  margin: 10px !important;
   display: none;
 }
 
