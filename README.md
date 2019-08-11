@@ -6,8 +6,12 @@ There are a lot of things that improve user's experience: starting from user-fri
 
   
 ## How does it work?    
-    
-   
+#### Watch gif, or read more below:
+
+
+<img src="GIFs/demo.gif" width="170"  height="auto" />
+
+
 #### Home page:
 
 When user opens app it displays home page, there user can search for nearby restaurants with default filters, or cutozmize options by clicking "Search options", and then search. It looks like this:
@@ -16,12 +20,9 @@ When user opens app it displays home page, there user can search for nearby rest
   
 #### Loading screens:
 
-When user submited form, he sees loading animation while application requests server for data, it usually takes below one second, so it was hard to take screenshot of that :D.
+When user submited form, he sees loading animation while application requests server for data:
 
-<img align="center" width="170" height="auto" src="https://i.imgur.com/vF5JRRB.png">  
-
-
-
+<img src="GIFs/loading.gif" width="170"  height="auto" />
 
 #### Restaurants list
 
