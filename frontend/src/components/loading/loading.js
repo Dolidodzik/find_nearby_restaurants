@@ -41,7 +41,7 @@ export default class loading extends Component {
 
           /* Changing view and sending data */
           this.props.history.push({
-            pathname: '/placesList',
+            pathname: '/loading',
             state: {
               WhatToLoad: null,
               PlacesListData: data,
