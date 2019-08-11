@@ -24,20 +24,6 @@ class Home extends React.Component {
 
   }
 
-  /* this function sets position to got object */
-  get_position(){
-    navigator.geolocation.watchPosition(
-      (position) => {
-        // Setting state to got postion
-        this.setState({
-          pos: position,
-        })
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 5 },
-    );
-  }
-
   HeaderClickEvent() {
     let value = this.state.DropDownMenuVisible;
     this.setState({
@@ -82,9 +68,31 @@ class Home extends React.Component {
 
         /* Else show errors */
       }, (error) => {
-        alert("GETTING LOCATION ERROR")
+
       })
 
+      var data_for_api_call = {
+        form: {
+          open_now: event.target[1].value,
+          keyword: event.target[2].value,
+          minprice: event.target[3].value,
+          maxprice: event.target[4].value,
+          radius: event.target[5].value,
+        },
+        location_coords: {
+          latitude: null,
+          longitude: null,
+        }
+      }
+
+      /* Changing view and sending data */
+      this.props.history.push({
+        pathname: '/loading',
+        state: {
+          WhatToLoad: "PLACES_LIST",
+          FormDataFromHome: data_for_api_call,
+        }
+      })
     /* Preventing default to avoid errors */
     event.preventDefault()
   }

@@ -25,7 +25,11 @@ class places_info():
     def get_places_in_circle(location, radius, open_now=None, keyword=None, minprice=None, maxprice=None):
 
         # Setting up URL
-        URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ str(location['latitude']) +","+ str(location['longitude']) +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
+
+        # URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ str(location['latitude']) +","+ str(location['longitude']) +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
+
+        # For a docs writting time, lets use melbourne coordinates
+        URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ str(-37.821107) +","+ str(144.927824) +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
 
         # Adding open_now if its sepcified as argument
         if open_now == True:
