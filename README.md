@@ -16,19 +16,24 @@ When user opens app it displays home page, there user can search for nearby rest
   
 #### Loading screens:
 
-When user submited form, he sees loading animation while application requests server for data.
+When user submited form, he sees loading animation while application requests server for data, it usually takes below one second, so it was hard to take screenshot of that :D.
 
-LOADING SCREEN PHOTOS
+<img align="center" width="170" height="auto" src="https://i.imgur.com/vF5JRRB.png">  
+
+
 
 
 #### Restaurants list
 
 After loading necessary data, it displays user list of places that match to his filters.  When user click on some place, he is redirected to restaurants details.
 
+<img align="center" width="170" height="auto" src="https://i.imgur.com/4u6Hcjj.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/XWfoMlM.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/SoYvSfv.png"> 
+
 #### Restaurant details
 
 Here, user can read exact information (like location, phone number, website) about restaurant that he clicked. Also gallery with photos related to selected place. 
 
+<img align="center" width="170" height="auto" src="https://i.imgur.com/957ctHG.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/ZNKCazn.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/XsBIY4k.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/3IACO5N.png"> <img align="center" width="170" height="auto" src="https://i.imgur.com/mNQwBtt.png">
 
 
 ### Instalation:
@@ -63,7 +68,7 @@ Finally - run following commands:
 python3 manage.py migrate
 python3 manage.py runserver
 ```  
-And that's it! You can see foodie in localhost:3000 in your browser!
+And that's it! You can see Foodi in your browser in this url: localhost:3000!
 
 
 
