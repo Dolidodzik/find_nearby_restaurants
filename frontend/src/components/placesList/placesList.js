@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './placesList.css'
 
 
-export default class placesList extends Component {
+export default class PlacesList extends Component {
     constructor(props) {
       super(props);
       this.getComponent = this.getComponent.bind(this);

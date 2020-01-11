@@ -8,7 +8,7 @@ import axios from 'axios';
 import LoadingScreen from 'react-loading-screen';
 
 /* This components should get values, that will be sent to backend to get google api response */
-export default class loading extends Component {
+export default class Loading extends Component {
 
     constructor(props) {
       super(props);

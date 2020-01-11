@@ -1,2 +1,2 @@
-import placesList from "./placesList"
-export default placesList;
+import PlacesList from "./placesList"
+export default PlacesList;

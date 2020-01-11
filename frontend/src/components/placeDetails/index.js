@@ -1,2 +1,2 @@
-import placeDetails from "./placeDetails"
-export default placeDetails;
+import PlaceDetails from "./placeDetails"
+export default PlaceDetails;

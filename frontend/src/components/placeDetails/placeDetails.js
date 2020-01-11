@@ -15,7 +15,7 @@ import 'react-image-lightbox/style.css';
 import Gallery from 'react-grid-gallery';
 
 
-export default class placeDetails extends Component {
+export default class PlaceDetails extends Component {
 
     getInitialState(){
       /* Getting data from api */
