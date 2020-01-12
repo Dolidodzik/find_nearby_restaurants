@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Fade from 'react-reveal/Fade';
 
 
-class Home extends React.Component {
+export default class Home extends React.Component {
 
   constructor(props) {
     super(props);
@@ -16,17 +16,7 @@ class Home extends React.Component {
     };
   }
 
-  ChangeDataForApiCall = (data) => {
-    this.setState({
-      data_for_api_call: data
-    });
-    store.dispatch({
-      type: 'CHANGE_DATA_FOR_API_CALL',
-      payload: data
-    })
-  }
-
-  HeaderClickEvent() {
+  HeaderClick() {
     let value = this.state.drop_down_menu_visible;
     this.setState({
       drop_down_menu_visible: !value
@@ -34,46 +24,8 @@ class Home extends React.Component {
   }
 
   handleSubmit(event) {
-    /* presisting event to avoid error */
-    event.persist()
-
     /* getting lcoation object (I will call getCurrentPosition from this object) */
     const location_object = window.navigator && window.navigator.geolocation;
-
-
-    /* This part of code is required to make app work in "real" way
-
-      // Getting location coords
-      location_object.getCurrentPosition((position) => {
-
-          // If everything is ok, save location_coords to object
-          // Object that contains full data that will be sent to backend
-          var data_for_api_call = {
-            form: {
-              open_now: event.target[1].value,
-              keyword: event.target[2].value,
-              minprice: event.target[3].value,
-              maxprice: event.target[4].value,
-              radius: event.target[5].value,
-            },
-            location_coords: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            }
-          }
-
-          // Changing view and sending data
-          this.props.history.push({
-            pathname: '/loading',
-            state: {
-              WhatToLoad: "PLACES_LIST",
-              FormDataFromHome: data_for_api_call,
-            }
-          })
-
-          // Else show errors *
-          }, (error) => { })
-    */
 
     var data_for_api_call = {
       form: {
@@ -86,17 +38,19 @@ class Home extends React.Component {
       location_coords: {
         latitude: null,
         longitude: null,
-      }
+      },
+      what_to_load: "PLACES_LIST"
     }
 
     /* Changing view and sending data */
-    console.log(data_for_api_call)
-    this.ChangeDataForApiCall(data_for_api_call)
+    store.dispatch({
+      type: 'CHANGE_DATA_FOR_API_CALL',
+      payload: data_for_api_call
+    })
     this.props.history.push({
       pathname: '/loading',
     })
 
-    /* Preventing default to avoid errors */
     event.preventDefault()
   }
 
@@ -126,7 +80,7 @@ class Home extends React.Component {
               </div>
 
                   <div className="mt-5 form_fields_container">
-                    <h5 onClick={this.HeaderClickEvent.bind(this)} className="search_options">
+                    <h5 onClick={this.HeaderClick.bind(this)} className="search_options">
                       Search options:
                       { this.state.drop_down_menu_visible && <span className="up_arrow"> &#9650; </span> }
                       { !this.state.drop_down_menu_visible && <span className="dropdown_arrow"> &#9660; </span> }
@@ -170,15 +124,6 @@ class Home extends React.Component {
           </div>
         </div>
       </div>
-
     );
   }
-
 }
-
-const mapStateToProps = (state) => {
-  return {
-    data_for_api_call: state.data_for_api_call
-  };
-}
-export default connect(mapStateToProps)(Home);

@@ -7,12 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // importing child components
 import Home from './components/Home';
-import Loading from './components/loading';
-import PlacesList from './components/placesList';
-import PlaceDetails from './components/placeDetails';
+import Loading from './components/Loading';
+import PlacesList from './components/PlacesList';
+import PlaceDetails from './components/PlaceDetails';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -40,7 +41,6 @@ class App extends React.Component {
 
             </div>
           </div>
-
         </div>
       </Provider>
     );

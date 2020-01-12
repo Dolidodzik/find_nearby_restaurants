@@ -1,18 +1,14 @@
 import React, {Component} from 'react';
 import './placeDetails.css'
-
-/* Importing axois */
 import axios from 'axios';
 
-/* Importing animations */
 import Fade from 'react-reveal/Fade';
 
-/* Imporintg lightbox */
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-
-
 import Gallery from 'react-grid-gallery';
+
+import store from '../../redux/store';
 
 
 export default class PlaceDetails extends Component {
@@ -28,42 +24,25 @@ export default class PlaceDetails extends Component {
         data: "initial_value",
         ReviewsVisible: false,
         GalleryShown: false,
-
         images: null,
       }
     }
 
     /* This function handles clicks of reviews header */
     ReviewsHeaderClick() {
-      let value = this.state.ReviewsVisible;
       this.setState({
-        ReviewsVisible: !value
+        ReviewsVisible: !this.state.ReviewsVisible
       })
-    }
-
-     GalleryHeaderClick(){
-
-      /* Getting gallery images links */
-      this.GetGalleryLinks();
-
     }
 
     GetGalleryLinks(){
 
       console.log("GET GALLERY :LINKS")
 
-      /* Getting ID of requested place */
-      let place_id = this.props.location.state.PlaceId;
-
-      /* Setting up URL */
-      let url = "http://localhost:8000/api/image_gallery/"+place_id;
-
       /* Requesting my backend to get images links list */
-      /* Requesting my backend */
-      console.log("TEST")
       axios({
         method: 'get',
-        url: url,
+        url: "http://localhost:8000/api/image_gallery/"+store.getState().data_for_api_call.PlaceId,
         headers: {
           "content-type": "application/json"
         }
@@ -93,11 +72,11 @@ export default class PlaceDetails extends Component {
         }
         console.log(final_data)
 
-        console.log("SET STEJT")
+        console.log("SET STATE")
         /* passing images data to state, and re-rendering after state change (look here to read more https://stackoverflow.com/questions/30782948/why-calling-react-setstate-method-doesnt-mutate-the-state-immediately)  */
         this.updateState(final_data);
 
-        console.log("END SET STEJT END")
+        console.log("END SET STATE")
 
       }).catch(function (error) {
         console.log(error)
@@ -106,14 +85,12 @@ export default class PlaceDetails extends Component {
     }
 
     BackToPlacesList(){
-      /* Changing view and sending data */
-      console.log(this.props.location.state.PlacesListData)
+      store.dispatch({
+        type: 'CHANGE_DATA_FOR_API_CALL',
+        payload: store.getState()
+      })
       this.props.history.push({
         pathname: '/placesList',
-        state: {
-          WhatToLoad: null,
-          PlacesListData: this.props.location.state.PlacesListData,
-        }
       })
     }
 
@@ -136,7 +113,7 @@ export default class PlaceDetails extends Component {
     render() {
 
       /* Setting data */
-      let data = this.props.location.state.PlaceDetailsData;
+      let data = store.getState().data_for_api_call.PlaceDetailsData;
       console.log(data)
 
       let images = null;
@@ -170,62 +147,73 @@ export default class PlaceDetails extends Component {
         );
       }
 
-      return (
-        <div className="place_details_component">
-          <div className="containter">
-            <div className="row">
+      if(data){
+        return (
+          <div className="place_details_component">
+            <div className="containter">
+              <div className="row">
 
-                <div className="spacer col-1"></div>
-                  <header className="col-10 p-3 py-5">
-                    <h2> Details of
-                      <div className="place_name"> {data.name}!</div>
-                    </h2>
+                  <div className="spacer col-1"></div>
+                    <header className="col-10 p-3 py-5">
+                      <h2> Details of
+                        <div className="place_name"> {data.name}!</div>
+                      </h2>
+                    </header>
+                  <div className="spacer col-1"></div>
+
+                  <a onClick={this.BackToPlacesList.bind(this)} className="col-12 mt-3" href=""> Back to places list! </a>
+                  <a href={"/"} className="col-12 mb-4"> Back to home! </a>
+
+
+                  <div className="col-12"> <b>Address:</b> {data.vicinity} </div>
+                  <div className="col-12"> <b>Website:</b> {data.website} </div>
+                  <div className="col-12"> <b>Phone:</b> {data.formatted_phone_number} </div>
+                  <div className="col-12 mb-5"> <b>Excat address:</b> {data.formatted_address} </div>
+
+
+                  <div className="col-12"> <b>Rating:</b> {data.rating} </div>
+                  <div className="col-12"> <b>Number of ratings:</b> {data.user_ratings_total} </div>
+                  <div className="col-12" onClick={this.ReviewsHeaderClick.bind(this)}>
+                    <b>Reviews:</b>
+                    { this.state.ReviewsVisible && <span className="up_arrow"> &#9650; </span> }
+                    { !this.state.ReviewsVisible && <span className="dropdown_arrow"> &#9660; </span> }
+                  </div>
+                  <Fade when={this.state.ReviewsVisible}>
+                    { this.state.ReviewsVisible &&
+                      <Reviews reviews={data.reviews} className="" getComponent={this.getComponent}/>
+                    }
+                  </Fade>
+
+                  <header className="col-12 p-5" onClick={this.GetGalleryLinks.bind(this)}>
+                    <span className="gallery_header"> Photos linked with this place: </span>
+                    { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
+                    { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
                   </header>
-                <div className="spacer col-1"></div>
 
-                <a onClick={this.BackToPlacesList.bind(this)} className="col-12 mt-3" href=""> Back to places list! </a>
-                <a href={"/"} className="col-12 mb-4"> Back to home! </a>
+                  <Fade left when={this.state.GalleryShown} className="px-5">
+                    { this.state.GalleryShown &&
+                      <div className="col-12" when={false}>
+                        <Gallery images={this.state.images} />
+                      </div>
+                    }
+                  </Fade>
 
-
-                <div className="col-12"> <b>Address:</b> {data.vicinity} </div>
-                <div className="col-12"> <b>Website:</b> {data.website} </div>
-                <div className="col-12"> <b>Phone:</b> {data.formatted_phone_number} </div>
-                <div className="col-12 mb-5"> <b>Excat address:</b> {data.formatted_address} </div>
-
-
-                <div className="col-12"> <b>Rating:</b> {data.rating} </div>
-                <div className="col-12"> <b>Number of ratings:</b> {data.user_ratings_total} </div>
-                <div className="col-12" onClick={this.ReviewsHeaderClick.bind(this)}>
-                  <b>Reviews:</b>
-                  { this.state.ReviewsVisible && <span className="up_arrow"> &#9650; </span> }
-                  { !this.state.ReviewsVisible && <span className="dropdown_arrow"> &#9660; </span> }
-                </div>
-                <Fade when={this.state.ReviewsVisible}>
-                  { this.state.ReviewsVisible &&
-                    <Reviews reviews={data.reviews} className="" getComponent={this.getComponent}/>
-                  }
-                </Fade>
-
-                <header className="col-12 p-5" onClick={this.GalleryHeaderClick.bind(this)}>
-                  <span className="gallery_header"> Photos linked with this place: </span>
-                  { this.state.GalleryShown && <span className="up_arrow"> &#9650; </span> }
-                  { !this.state.GalleryShown && <span className="dropdown_arrow"> &#9660; </span> }
-                </header>
-
-
-                <Fade left when={this.state.GalleryShown} className="px-5">
-                  { this.state.GalleryShown &&
-                    <div className="col-12" when={false}>
-                      <Gallery images={this.state.images} />
-                    </div>
-                  }
-                </Fade>
-
-
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }else{
+        return(
+          <div className="place_details_component">
 
+            <h2>
+              <div className="place_name"> Nothing found! </div>
+            </h2>
+
+            <a href={"/"} className="col-12 mb-4"> Back to home! </a>
+
+          </div>
+        );
+      }
+    }
   }
