@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './loading.css'
+import store from '../../redux/store';
 
 /* Importing axois */
 import axios from 'axios';
@@ -7,7 +8,7 @@ import axios from 'axios';
 /* Importing lib that will be responsible for displaying loading page */
 import LoadingScreen from 'react-loading-screen';
 
-/* This components should get values, that will be sent to backend to get google api response */
+/* This component displays simple animation in time of waiting for backend response */
 export default class Loading extends Component {
 
     constructor(props) {
@@ -19,14 +20,12 @@ export default class Loading extends Component {
 
     /* This function requests my backend with given data to get list of places json, and pass it to another component */
     CallHomeApiRequest(data) {
-
-      let what_to_load = this.props.location.state.WhatToLoad;
+      console.log(store.getState())
+      let what_to_load = 0;
 
       if(what_to_load == "PLACES_LIST" ){
 
-        console.log("PLACES LIST")
         let data_to_pass_to_backend = this.props.location.state.FormDataFromHome;
-        console.log(data_to_pass_to_backend)
         let url = "http://127.0.0.1:8000/api/home"
         axios({
           method: 'post',
@@ -41,7 +40,7 @@ export default class Loading extends Component {
 
           /* Changing view and sending data */
           this.props.history.push({
-            pathname: '/loading',
+            pathname: '/placesList',
             state: {
               WhatToLoad: null,
               PlacesListData: data,
@@ -53,7 +52,7 @@ export default class Loading extends Component {
         });
 
       }else if(what_to_load == "PLACE_DETAILS"){
-        console.log("HELLO")
+
         /* Getting ID of requested place */
         let place_id = this.props.location.state.SelectedPlaceID;
 

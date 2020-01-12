@@ -25,7 +25,6 @@ class places_info():
     def get_places_in_circle(location, radius, open_now=None, keyword=None, minprice=None, maxprice=None):
 
         # Setting up URL
-
         # URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+ str(location['latitude']) +","+ str(location['longitude']) +"&radius="+ str(radius) +"&type=restaurant&key=" + settings.KEY
 
         # For a docs writting time, lets use melbourne coordinates
@@ -46,7 +45,6 @@ class places_info():
 
         if maxprice != None:
             URL += "&maxprice="+str(maxprice)
-
 
         # Setting up cache key
         cache_key = "PLACE_DETAILS_CACHE_"+str(location)+str(radius)

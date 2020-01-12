@@ -11,6 +11,8 @@ import Loading from './components/loading';
 import PlacesList from './components/placesList';
 import PlaceDetails from './components/placeDetails';
 
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,26 +21,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <Provider store={store}>
+        <div className="App">
 
-        <h1 className="header"> Thats how would this webpage look on mobile phone: </h1>
+          <h1 className="header"> Thats how would this webpage look on mobile phone: </h1>
 
-        <div className="first-wrapper">
-          <div className="second-wrapper">
+          <div className="first-wrapper">
+            <div className="second-wrapper">
 
-            <Router>
-              <div className="app_container">
-                <Route exact path="/" component={Home} />
-                <Route exact path="/loading" component={Loading} />
-                <Route exact path="/placesList" component={PlacesList} />
-                <Route exact path="/placeDetails/" component={PlaceDetails} />
-              </div>
-            </Router>
+              <Router>
+                <div className="app_container">
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/loading" component={Loading} />
+                  <Route exact path="/placesList" component={PlacesList} />
+                  <Route exact path="/placeDetails/" component={PlaceDetails} />
+                </div>
+              </Router>
 
+            </div>
           </div>
-        </div>
 
-      </div>
+        </div>
+      </Provider>
     );
   }
 }
