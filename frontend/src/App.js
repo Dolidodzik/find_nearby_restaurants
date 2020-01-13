@@ -1,7 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,36 +14,28 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+export default function App(props) {
+  return (
+    <Provider store={store}>
+      <div className="App">
 
-  render() {
-    return (
-      <Provider store={store}>
-        <div className="App">
+        <h1 className="header"> Thats how would this webpage look on mobile phone: </h1>
 
-          <h1 className="header"> Thats how would this webpage look on mobile phone: </h1>
+        <div className="first-wrapper">
+          <div className="second-wrapper">
 
-          <div className="first-wrapper">
-            <div className="second-wrapper">
+            <Router>
+              <div className="app_container">
+                <Route exact path="/" component={Home} />
+                <Route exact path="/loading" component={Loading} />
+                <Route exact path="/placesList" component={PlacesList} />
+                <Route exact path="/placeDetails/" component={PlaceDetails} />
+              </div>
+            </Router>
 
-              <Router>
-                <div className="app_container">
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/loading" component={Loading} />
-                  <Route exact path="/placesList" component={PlacesList} />
-                  <Route exact path="/placeDetails/" component={PlaceDetails} />
-                </div>
-              </Router>
-
-            </div>
           </div>
         </div>
-      </Provider>
-    );
-  }
+      </div>
+    </Provider>
+  );
 }
-
-export default App;

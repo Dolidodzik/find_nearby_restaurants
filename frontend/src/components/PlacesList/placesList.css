@@ -3,7 +3,7 @@
   font-size: 19px;
 }
 
-.place_link{
+.place-link{
   text-decoration: underline;
   color: inherit;
   transition: all 1s;

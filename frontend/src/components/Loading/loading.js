@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import './loading.css'
 import store from '../../redux/store';
-
-/* Importing axois */
 import axios from 'axios';
 
-/* Importing lib that will be responsible for displaying loading page */
 import LoadingScreen from 'react-loading-screen';
 
 /* This component displays simple animation in time of waiting for backend response */
@@ -13,15 +10,14 @@ export default class Loading extends Component {
 
   constructor(props) {
     super(props);
-    this.CallHomeApiRequest = this.CallHomeApiRequest.bind(this);
+    this.apiRequest()
   }
 
-  /* This function requests backend with given data to get list of places json, and pass it to another component */
-  CallHomeApiRequest(data) {
+  apiRequest(data) {
 
     let store_data = store.getState().data_for_api_call
 
-    if(store_data.what_to_load == "PLACES_LIST"){
+    if(store_data.what_to_load === "PLACES_LIST"){
       axios({
         method: 'post',
         url: "http://127.0.0.1:8000/api/home",
@@ -46,7 +42,7 @@ export default class Loading extends Component {
           console.log(error)
       });
 
-    }else if(store_data.what_to_load == "PLACE_DETAILS"){
+    }else if(store_data.what_to_load === "PLACE_DETAILS"){
 
       let place_id = store_data.selected_place_id;
 
@@ -58,9 +54,7 @@ export default class Loading extends Component {
         }
       }).then((response) => {
 
-        /* Getting data */
         let data = response.data[0].json_data.result;
-
         /* If optional fields are "null", replace them with human-friendly string */
         if(!data.website){
           data.website = "Not provided"
@@ -71,8 +65,6 @@ export default class Loading extends Component {
         let data_for_api_call = {
           PlaceDetailsData: data,
           PlaceId: place_id,
-          /* This data will be used in case if user want to back to places list */
-          PlacesListData: store_data.PlacesListData,
         }
 
         store.dispatch({
@@ -92,10 +84,7 @@ export default class Loading extends Component {
 
   render() {
     return (
-      <div className="loading_component_container">
-
-        { this.CallHomeApiRequest() }
-
+      <div className="loading-component-container">
         <LoadingScreen
           loading={true}
           bgColor='#fff'
@@ -104,7 +93,6 @@ export default class Loading extends Component {
           //logoSrc='/logo.png'
           text='Loading places...'
         />
-
       </div>
     );
   }

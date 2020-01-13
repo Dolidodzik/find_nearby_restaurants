@@ -2,24 +2,11 @@ import React, {Component} from 'react';
 import './placesList.css'
 
 import store from '../../redux/store';
-import { connect } from 'react-redux';
 
 
 export default class PlacesList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      PlacesListData: store.getState().data_for_api_call.PlacesListData
-    }
-    localStorage.setItem('PLACES_LIST', JSON.stringify( store.getState().data_for_api_call.PlacesListData ));
-    this.HeadToPlaceDetails = this.HeadToPlaceDetails.bind(this);
-  }
 
-  componentDidMount(){
-
-  }
-
-  HeadToPlaceDetails(event){
+  headToPlaceDetails(event){
 
     let data_for_api_call = {
       selected_place_id: event.target.id,
@@ -27,7 +14,6 @@ export default class PlacesList extends Component {
       PlacesListData: store.getState().data_for_api_call.PlacesListData
     }
 
-    /* Changing view and sending data */
     store.dispatch({
       type: 'CHANGE_DATA_FOR_API_CALL',
       payload: data_for_api_call
@@ -40,7 +26,6 @@ export default class PlacesList extends Component {
   }
 
   render() {
-
 
     function PlacesList(props) {
 
@@ -55,9 +40,9 @@ export default class PlacesList extends Component {
         const content = places.map((place) =>
           <div key={place.id} className="mt-5">
 
-            <a href="#" className="place_link">
+            <a href="#" className="place-link">
               <header>
-                <h4 id={place.place_id} onClick={props.HeadToPlaceDetails}> {place.name} </h4>
+                <h4 id={place.place_id} onClick={props.headToPlaceDetails}> {place.name} </h4>
               </header>
             </a>
             <div className="info mt-3">
@@ -92,14 +77,11 @@ export default class PlacesList extends Component {
 
             <div className="spacer col-1"></div>
             <main className="results col-10">
-
-              <PlacesList places={this.places} HeadToPlaceDetails={this.HeadToPlaceDetails}/>
-
+              <PlacesList places={this.places} headToPlaceDetails={this.headToPlaceDetails.bind(this)}/>
             </main>
             <div className="spacer col-1"></div>
 
             <div className="spacer padding-bottom"></div>
-
           </div>
         </div>
       </div>

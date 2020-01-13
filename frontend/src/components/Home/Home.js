@@ -1,8 +1,6 @@
 import React from 'react';
 import './Home.css';
 import store from '../../redux/store';
-
-/* Importing animations */
 import Fade from 'react-reveal/Fade';
 
 export default class Home extends React.Component {
