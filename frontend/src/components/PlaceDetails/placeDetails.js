@@ -90,8 +90,12 @@ export default class PlaceDetails extends Component {
 
     render() {
 
-      /* Setting data */
       let data = store.getState().data_for_api_call.PlaceDetailsData;
+      if(data){
+        sessionStorage.setItem('PLACE_DETAILS', JSON.stringify(data));
+      }else{
+        data = JSON.parse( sessionStorage.getItem('PLACE_DETAILS') )
+      }
 
       /* This function returns html with reviews */
       function Reviews(props) {
