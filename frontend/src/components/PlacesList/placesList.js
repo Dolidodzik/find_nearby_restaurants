@@ -31,9 +31,9 @@ export default class PlacesList extends Component {
 
       let places = store.getState().data_for_api_call.PlacesListData;
       if(places){
-        sessionStorage.setItem('PLACES_LIST', places);
+        sessionStorage.setItem('PLACES_LIST', JSON.stringify(places));
       }else{
-        places = JSON.parse( sessionStorage.getItem('PLACES_LIST') )
+        places = JSON.parse( sessionStorage.getItem('PLACES_LIST'));
       }
 
       if(places){

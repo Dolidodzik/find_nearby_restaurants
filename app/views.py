@@ -1,16 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-
-# Importing scripts for api control files
-import app.scripts_for_api_control.main as SFAC
-from app.scripts_for_api_control.high_level_code import places_info
-import ast
-
+from django.http import JsonResponse
+from app.scripts_for_api_control.main import places_info
 from rest_framework import views
 from rest_framework.response import Response
 from .serializers import *
-
-from django.utils.html import escape
 import json
 
 
@@ -44,7 +36,7 @@ class list_of_places(views.APIView):
 
         return JsonResponse(response)
 
-# This view should be linked in places_list view. This view returns details data about place with given id
+# This view should be linked in places_list view - this view returns details data about place with given id
 class place_details(views.APIView):
     def get(self, request, place_id):
 

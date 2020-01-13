@@ -10,17 +10,14 @@ import app.scripts_for_api_control.settings as settings
 
 
 class Cached_Image(models.Model):
-    # Google api reference
+    # Google api image reference (string)
     reference = models.CharField(max_length=255, default=None, primary_key=True)
-
-    # Saved image file got from google api
+    # Saved image file from google api
     image_file = models.ImageField(upload_to='cached_images', default="defaults/default.png")
 
     def save_image(self):
-        print("REQUESTING IMAGE")
         # Creating URL to request
-        URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=" + settings.KEY
-        URL += "&photoreference=" + self.reference
+        URL = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=" + settings.KEY + "&photoreference=" + self.reference
         result = urllib.request.urlretrieve(URL)
         img_temp = NamedTemporaryFile(delete = True)
         img_temp.write(urlopen(URL).read())
