@@ -40,7 +40,7 @@ export default class PlacesList extends Component {
         const content = places.map((place) =>
           <div key={place.id} className="mt-5">
 
-            <a href="#" className="place-link">
+            <a href="/placeDetails" className="place-link">
               <header>
                 <h4 id={place.place_id} onClick={props.headToPlaceDetails}> {place.name} </h4>
               </header>

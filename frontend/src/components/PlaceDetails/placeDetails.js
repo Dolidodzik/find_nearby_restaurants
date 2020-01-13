@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import './placeDetails.css'
 import axios from 'axios';
+import store from '../../redux/store';
 
 import Fade from 'react-reveal/Fade';
-
-import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import Gallery from 'react-grid-gallery';
-
-import store from '../../redux/store';
 
 
 export default class PlaceDetails extends Component {
@@ -48,15 +45,13 @@ export default class PlaceDetails extends Component {
         }
       }).then((response) => {
 
-        /* Getting data */
         let data = response.data[0].json_data;
-
         let final_data = [];
 
         for (var i = 0; i < data.length; i++) {
-            //console.log(data[i]);
+
             /* Every photo will be represented by one object with various propeties  */
-            let object = new Object();
+            let object = {}
 
             /* Setting propeties under names that are compatible with "react-grid-gallery" library  */
             object.src = data[i].img_url.substring(17);
@@ -64,19 +59,18 @@ export default class PlaceDetails extends Component {
             object.thumbnailHeight = data[i].height;
             object.thumbnail = object.src;
 
-            /* Setting up id/number of image */
             object.image_number = i;
-
-            /* pushing set data */
             final_data.push(object);
         }
-        console.log(final_data)
 
-        console.log("SET STATE")
         /* passing images data to state, and re-rendering after state change (look here to read more https://stackoverflow.com/questions/30782948/why-calling-react-setstate-method-doesnt-mutate-the-state-immediately)  */
-        this.updateState(final_data);
-
-        console.log("END SET STATE")
+        this.setState({
+          images: final_data
+        },() => {
+          this.setState({
+            GalleryShown: true,
+          })
+        })
 
       }).catch(function (error) {
         console.log(error)
@@ -84,7 +78,7 @@ export default class PlaceDetails extends Component {
 
     }
 
-    BackToPlacesList(){
+    backToPlacesList(){
       store.dispatch({
         type: 'CHANGE_DATA_FOR_API_CALL',
         payload: store.getState()
@@ -94,51 +88,25 @@ export default class PlaceDetails extends Component {
       })
     }
 
-    updateState = (images) => {
-     console.log('changing state');
-      this.setState({
-        images: images
-      },() => {
-        console.log('new state', this.state);
-
-        /* showing gallery */
-        this.setState({
-          GalleryShown: true,
-        })
-
-      })
-    }
-
-
     render() {
 
       /* Setting data */
       let data = store.getState().data_for_api_call.PlaceDetailsData;
-      console.log(data)
-
-      let images = null;
-
-      if(this.state.GalleryShown){
-        images = this.state.images;
-      }
 
       /* This function returns html with reviews */
       function Reviews(props) {
-
           const content = props.reviews.map((review) =>
-            <div key={review.id} className="mt-5">
-
-                <header>
-                  <h4 id={review.place_id} onClick={review.getComponent}> {review.name} </h4>
-                </header>
-                <div className="info mt-3 px-4">
-                  <a href={review.author_url} target="_blank"> {review.author_name} </a> <br/>
-                  <div className="mt-2"> {review.text} </div> <br/>
-                  <div> <b>Rating:</b> {review.rating} </div> <br/>
-                </div>
-
-            </div>
-          );
+          <div key={review.id} className="mt-5">
+              <header>
+                <h4 id={review.place_id} onClick={review.getComponent}> {review.name} </h4>
+              </header>
+              <div className="info mt-3 px-4">
+                <a href={review.author_url} target="_blank" rel="noopener noreferrer"> {review.author_name} </a> <br/>
+                <div className="mt-2"> {review.text} </div> <br/>
+                <div> <b>Rating:</b> {review.rating} </div> <br/>
+              </div>
+          </div>
+        );
 
         return (
           <div>
@@ -161,8 +129,8 @@ export default class PlaceDetails extends Component {
                     </header>
                   <div className="spacer col-1"></div>
 
-                  <a onClick={this.BackToPlacesList.bind(this)} className="col-12 mt-3" href=""> Back to places list! </a>
-                  <a href={"/"} className="col-12 mb-4"> Back to home! </a>
+                  <a onClick={this.backToPlacesList.bind(this)} className="col-12 mt-3" href="/placesList"> Back to places list! </a>
+                  <a href="/" className="col-12 mb-4"> Back to home! </a>
 
 
                   <div className="col-12"> <b>Address:</b> {data.vicinity} </div>
