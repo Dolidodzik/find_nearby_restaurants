@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// importing child components
+// importing children components
 import Home from './components/Home';
 import Loading from './components/Loading';
 import PlacesList from './components/PlacesList';

@@ -1,21 +1,16 @@
-.home_component {
-
+.home-component {
 }
-
 .colon{
   display: none;
 }
-
 .options{
   font-size: 20px;
 }
-
-.submit_search{
+.submit-search{
   background-color: #fafafa;
   border-radius: 10px;
   border: 2px solid #f1f1f1;
 }
-
-.search_options{
+.search-options{
   cursor: pointer;
 }
